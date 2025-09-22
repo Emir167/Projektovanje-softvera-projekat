@@ -4,7 +4,9 @@
  */
 package so.gost;
 
+import db.DBBroker;
 import domain.ApstraktniDomenskiObjekat;
+import domain.Gost;
 import so.AbstractSO;
 
 /**
@@ -15,12 +17,17 @@ public class SOUpdateGost extends AbstractSO{
 
     @Override
     protected void validate(ApstraktniDomenskiObjekat ado) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if (!(ado instanceof Gost)) {
+            throw new Exception("Prosledjeni objekat nije instanca klase Gost!");
+        }
+        Gost g = (Gost) ado;
+        if (!g.getEmail().contains("@")) {
+            throw new Exception("Neispravan format email-a!");
+        }
     }
 
     @Override
     protected void execute(ApstraktniDomenskiObjekat ado) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        DBBroker.getInstance().update(ado);
     }
-    
 }

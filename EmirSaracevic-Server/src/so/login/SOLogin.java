@@ -4,7 +4,11 @@
  */
 package so.login;
 
+import controller.ServerController;
+import db.DBBroker;
 import domain.ApstraktniDomenskiObjekat;
+import domain.Recepcioner;
+import java.util.ArrayList;
 import so.AbstractSO;
 
 /**
@@ -12,15 +16,39 @@ import so.AbstractSO;
  * @author korisnk
  */
 public class SOLogin extends AbstractSO{
-
+    
+    Recepcioner ulogovaniRecepcioner;
     @Override
     protected void validate(ApstraktniDomenskiObjekat ado) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if (!(ado instanceof Recepcioner)) {
+            throw new Exception("Prosledjeni objekat nije instanca klase Recepcioner!");
+        }
+        Recepcioner r = (Recepcioner) ado;
+        for (Recepcioner recepcioner : ServerController.getInstance().getUlogovaniRecepcioneri()) {
+            if (recepcioner.getKorisnickoIme().equals(r.getKorisnickoIme())) {
+                throw new Exception("Recepcioner je vec ulogovan!");
+            }
+        }
+
     }
 
     @Override
     protected void execute(ApstraktniDomenskiObjekat ado) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Recepcioner r = (Recepcioner) ado;
+
+        ArrayList<Recepcioner> recepcioneri
+                = (ArrayList<Recepcioner>) (ArrayList<?>) DBBroker.getInstance().select(ado);
+
+        for (Recepcioner recepcioner : recepcioneri) {
+            if (recepcioner.getKorisnickoIme().equals(r.getKorisnickoIme())
+                    && recepcioner.getSifra().equals(r.getSifra())) {
+                ulogovaniRecepcioner = recepcioner;
+                ServerController.getInstance().getUlogovaniRecepcioneri().add(recepcioner);
+                return;
+            }
+        }
+
+        throw new Exception("Recepcioner sa tim kredencijalima ne postoji!");
     }
     
 }

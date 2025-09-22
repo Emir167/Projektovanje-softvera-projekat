@@ -17,7 +17,7 @@ public class ThreadServer extends Thread{
 
     public ThreadServer() {
         try {
-            serverSocket = new ServerSocket(10000);
+            serverSocket = new ServerSocket(9000);
         } catch (Exception e) {
             e.printStackTrace();
         }
