@@ -10,4 +10,20 @@ package controller;
  */
 public class KlijentController {
     
+    private static KlijentController instance;
+
+    private KlijentController() {
+    }
+
+    public static KlijentController getInstance() {
+        if (instance == null) {
+            instance = new KlijentController();
+        }
+        return instance;
+    }
+    
+    
+    
+    
+    
 }
