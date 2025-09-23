@@ -4,19 +4,25 @@
  */
 package forme;
 
+import controller.KlijentController;
+import domain.Recepcioner;
+import javax.swing.JOptionPane;
+import session.Session;
+
 /**
  *
  * @author korisnk
  */
-public class LogInForma extends javax.swing.JFrame {
+public class LoginForma extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(LogInForma.class.getName());
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(LoginForma.class.getName());
 
     /**
-     * Creates new form LogInForma
+     * Creates new form LoginForma
      */
-    public LogInForma() {
+    public LoginForma() {
         initComponents();
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -34,6 +40,7 @@ public class LogInForma extends javax.swing.JFrame {
         jPasswordFieldSIfra = new javax.swing.JPasswordField();
         jButtonUlogujSe = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -41,14 +48,29 @@ public class LogInForma extends javax.swing.JFrame {
 
         jLabel2.setText("sifra:");
 
+        jTextFieldKorisnickoIme.setText("emir");
+
+        jPasswordFieldSIfra.setText("emir");
+
         jButtonUlogujSe.setText("ULOGUJ SE");
+        jButtonUlogujSe.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonUlogujSeActionPerformed(evt);
+            }
+        });
 
         jLabel4.setText("Dobrodosao/la! Unesite Vase korisnicko ime i sifru.");
+
+        jButton1.setText("ODUSTANI");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(91, Short.MAX_VALUE)
+                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(91, 91, 91))
             .addGroup(layout.createSequentialGroup()
                 .addGap(50, 50, 50)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -59,14 +81,12 @@ public class LogInForma extends javax.swing.JFrame {
                     .addComponent(jTextFieldKorisnickoIme, javax.swing.GroupLayout.DEFAULT_SIZE, 122, Short.MAX_VALUE)
                     .addComponent(jPasswordFieldSIfra))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jButton1)
+                .addGap(48, 48, 48)
                 .addComponent(jButtonUlogujSe, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(80, 80, 80))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(91, Short.MAX_VALUE)
-                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(91, 91, 91))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -81,13 +101,40 @@ public class LogInForma extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jPasswordFieldSIfra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jButtonUlogujSe, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jButtonUlogujSe, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(80, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButtonUlogujSeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonUlogujSeActionPerformed
+       
+        try {
+
+            if (jTextFieldKorisnickoIme.getText().isEmpty()
+                || new String(jPasswordFieldSIfra.getPassword()).isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Korisnicko ime i sifra moraju biti popunjeni!");
+                return;
+            }
+
+            Recepcioner r = new Recepcioner();
+            r.setKorisnickoIme(jTextFieldKorisnickoIme.getText());
+            r.setSifra(String.valueOf(jPasswordFieldSIfra.getPassword()));
+
+            Recepcioner recepcioner = KlijentController.getInstance().login(r);
+            Session.getInstance().setUlogovani(recepcioner);
+            
+            new MainForma().setVisible(true);
+            this.dispose();
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage());
+        }
+    }//GEN-LAST:event_jButtonUlogujSeActionPerformed
 
     /**
      * @param args the command line arguments
@@ -111,10 +158,11 @@ public class LogInForma extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new LogInForma().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new LoginForma().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButtonUlogujSe;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

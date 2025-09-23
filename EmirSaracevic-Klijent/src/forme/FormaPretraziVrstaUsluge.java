@@ -8,6 +8,7 @@ package forme;
  *
  * @author korisnk
  */
+
 public class FormaPretraziVrstaUsluge extends javax.swing.JDialog {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FormaPretraziVrstaUsluge.class.getName());
@@ -32,6 +33,7 @@ public class FormaPretraziVrstaUsluge extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
+        jTableVrstaUsluge = new javax.swing.JTable();
         jTextFieldNazivVrsteUsluge = new javax.swing.JTextField();
         jButtonPretraziUslugu = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
@@ -43,6 +45,19 @@ public class FormaPretraziVrstaUsluge extends javax.swing.JDialog {
         jLabel1.setText("PRETRAZI VRSTU USLUGE");
 
         jLabel2.setText("Unesi naziv vrste usluge:");
+
+        jTableVrstaUsluge.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(jTableVrstaUsluge);
 
         jButtonPretraziUslugu.setText("PRETRAZI");
 
@@ -166,6 +181,7 @@ public class FormaPretraziVrstaUsluge extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTableVrstaUsluge;
     private javax.swing.JTextField jTextFieldNazivVrsteUsluge;
     // End of variables declaration//GEN-END:variables
 }

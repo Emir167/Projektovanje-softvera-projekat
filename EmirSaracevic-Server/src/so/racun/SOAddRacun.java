@@ -1,26 +1,49 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package so.racun;
 
+import db.DBBroker;
 import domain.ApstraktniDomenskiObjekat;
+import domain.Racun;
+import domain.StavkaRacuna;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import so.AbstractSO;
 
-/**
- *
- * @author korisnk
- */
-public class SOAddRacun extends AbstractSO{
+public class SOAddRacun extends AbstractSO {
 
     @Override
     protected void validate(ApstraktniDomenskiObjekat ado) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if (!(ado instanceof Racun)) {
+            throw new Exception("Prosledjeni objekat nije instanca klase Racun!");
+        }
+        Racun r = (Racun) ado;
+
+        if (r.getRecepcioner() == null || r.getGost() == null) {
+            throw new Exception("Racun mora imati recepcionera i gosta.");
+        }
+        if (r.getStavke() == null || r.getStavke().isEmpty()) {
+            throw new Exception("Racun mora imati bar jednu stavku.");
+        }
+        if (r.getDatumIzdavanja() == null) {
+            throw new Exception("Datum izdavanja je obavezan.");
+        }
     }
 
     @Override
     protected void execute(ApstraktniDomenskiObjekat ado) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        
+        PreparedStatement ps = DBBroker.getInstance().insert(ado);
+        ResultSet keys = ps.getGeneratedKeys();
+        keys.next();
+        int idRacuna = keys.getInt(1);
+
+        Racun r = (Racun) ado;
+        r.setIdRacuna(idRacuna);
+
+        int rb = 1;
+        for (StavkaRacuna s : r.getStavke()) {
+            s.setIdRacuna(idRacuna);
+            s.setRb(rb++);
+            DBBroker.getInstance().insert(s);
+        }
     }
-    
 }

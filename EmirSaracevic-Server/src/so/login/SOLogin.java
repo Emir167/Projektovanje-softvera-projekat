@@ -50,5 +50,10 @@ public class SOLogin extends AbstractSO{
 
         throw new Exception("Recepcioner sa tim kredencijalima ne postoji!");
     }
+
+    public Recepcioner getUlogovaniRecepcioner() {
+        return ulogovaniRecepcioner;
+    }
+    
     
 }

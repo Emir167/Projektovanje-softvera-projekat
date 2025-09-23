@@ -72,9 +72,8 @@ public class RecSS extends ApstraktniDomenskiObjekat{
 
     
     
-    @Override
     public String tableName() {
-        return "recSS";
+        return "rec_ss"; 
     }
 
     @Override
@@ -112,37 +111,34 @@ public class RecSS extends ApstraktniDomenskiObjekat{
         return "(idRecepcioner,idStrucnaSprema,datumSticanja)";
     }
 
-    @Override
     public String requirement() {
-        return "id = " + id;
+        return "idRecepcioner=" + idRecepcioner + " AND idStrucnaSprema=" + idStrucnaSprema;
     }
 
     @Override
     public String valuesForInsert() {
-        Calendar c = Calendar.getInstance();
-        c.setTime(datumSticanja);
-        int d = c.get(Calendar.DAY_OF_MONTH);
-        int m = c.get(Calendar.MONTH) + 1;
-        int y = c.get(Calendar.YEAR);
-        String ds = y + "-" + m + "-" + d;
-
-        return idRecepcioner + "," + idStrucnaSprema + ",'" + ds + "'";    }
+        return idRecepcioner + "," + idStrucnaSprema + ",'" +
+           new java.sql.Date(datumSticanja.getTime()) + "'";
+    }
 
     @Override
     public String valuesForUpdate() {
-        Calendar c = Calendar.getInstance();
-        c.setTime(datumSticanja);
-        int d = c.get(Calendar.DAY_OF_MONTH);
-        int m = c.get(Calendar.MONTH) + 1;
-        int y = c.get(Calendar.YEAR);
-        String ds = y + "-" + m + "-" + d;
+        return "datumSticanja='" + new java.sql.Date(datumSticanja.getTime()) + "'";
+    }
 
-        return "datumSticanja='" + ds + "'";    }
-
-    @Override
+     @Override
     public String requirementForSelect(Object o) {
-        int idRec = (int) o;
-        return "WHERE idRecepcioner= " + idRec;
+        if (o == null) return "";
+        if (o instanceof Integer) {
+            int idRec = (Integer) o;
+            return " WHERE idRecepcioner=" + idRec;
+        }
+        if (o instanceof RecSS) {
+            RecSS key = (RecSS) o;
+            return " WHERE idRecepcioner=" + key.idRecepcioner +
+                   " AND idStrucnaSprema=" + key.idStrucnaSprema;
+        }
+        return "";
     }
     
     

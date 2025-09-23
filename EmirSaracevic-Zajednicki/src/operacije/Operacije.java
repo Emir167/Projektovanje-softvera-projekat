@@ -9,5 +9,25 @@ package operacije;
  * @author korisnk
  */
 public enum Operacije {
-    LOGIN;
+
+    LOGIN,
+
+    GOST_KREIRAJ,
+    GOST_PRETRAZI,
+    GOST_IZMENI,
+    GOST_OBRISI,
+
+    RACUN_KREIRAJ,
+    RACUN_PRETRAZI,
+    RACUN_IZMENI,
+
+    RECEPCIONER_GET_ALL,
+
+    STRUCNA_SPREMA_UNESI,
+
+    
+    USLUGA_UNESI,     
+    USLUGA_PRETRAZI,   
+    USLUGA_IZMENI,     
+    USLUGA_OBRISI     
 }

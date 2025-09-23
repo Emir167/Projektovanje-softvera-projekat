@@ -93,18 +93,18 @@ public class StrucnaSprema extends ApstraktniDomenskiObjekat{
     }
 
     @Override
-    public String requirement() {
-        return "idStrucnaSprema =" + idStrucnaSprema;
-    }
-
-    @Override
     public String valuesForInsert() {
         return "'" + naziv + "','" + stepenObrazovanja + "'";
     }
 
     @Override
     public String valuesForUpdate() {
-        return "";
+    return "naziv='" + naziv + "', stepenObrazovanja='" + stepenObrazovanja + "'";
+    }
+
+@Override
+    public String requirement() {
+    return "idStrucnaSprema=" + idStrucnaSprema;
     }
 
     @Override

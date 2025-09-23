@@ -1,26 +1,28 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package so.vrstaUsluge;
 
+import db.DBBroker;
 import domain.ApstraktniDomenskiObjekat;
+import domain.VrstaUsluge;
 import so.AbstractSO;
 
-/**
- *
- * @author korisnk
- */
-public class SOAddVrstaUsluge extends AbstractSO{
+public class SOAddVrstaUsluge extends AbstractSO {
 
     @Override
     protected void validate(ApstraktniDomenskiObjekat ado) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if (!(ado instanceof VrstaUsluge)) {
+            throw new Exception("Prosledjeni objekat nije instanca klase VrstaUsluge!");
+        }
+        VrstaUsluge vu = (VrstaUsluge) ado;
+        if (vu.getNazivUsluge() == null || vu.getNazivUsluge().trim().isEmpty()) {
+            throw new Exception("Naziv usluge je obavezan.");
+        }
+        if (vu.getCena() < 0) {
+            throw new Exception("Cena usluge ne moze biti negativna.");
+        }
     }
 
     @Override
     protected void execute(ApstraktniDomenskiObjekat ado) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        DBBroker.getInstance().insert(ado);
     }
-    
 }

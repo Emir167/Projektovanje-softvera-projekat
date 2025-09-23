@@ -18,15 +18,23 @@ public class Racun extends ApstraktniDomenskiObjekat{
     private int idRacuna;
     private Date datumIzdavanja;
     private double ukupniIznos;
+    private Recepcioner recepcioner;
+    private Gost gost;
+    private ArrayList<StavkaRacuna> stavke = new ArrayList<>();
 
     public Racun() {
     }
 
-    public Racun(int idRacuna, Date datumIzdavanja, double ukupniIznos) {
+    public Racun(int idRacuna, Date datumIzdavanja, double ukupniIznos, Recepcioner recepcioner, Gost gost, ArrayList<StavkaRacuna> stavke) {
         this.idRacuna = idRacuna;
         this.datumIzdavanja = datumIzdavanja;
         this.ukupniIznos = ukupniIznos;
+        this.recepcioner = recepcioner;
+        this.gost = gost;
+        this.stavke = stavke;
     }
+    
+    
 
     public int getIdRacuna() {
         return idRacuna;
@@ -51,6 +59,30 @@ public class Racun extends ApstraktniDomenskiObjekat{
     public void setUkupniIznos(double ukupniIznos) {
         this.ukupniIznos = ukupniIznos;
     }
+
+    public Gost getGost() {
+        return gost;
+    }
+
+    public void setGost(Gost gost) {
+        this.gost = gost;
+    }
+
+    public Recepcioner getRecepcioner() {
+        return recepcioner;
+    }
+
+    public void setRecepcioner(Recepcioner recepcioner) {
+        this.recepcioner = recepcioner;
+    }
+
+    public ArrayList<StavkaRacuna> getStavke() {
+        return stavke;
+    }
+
+    public void setStavke(ArrayList<StavkaRacuna> stavke) {
+        this.stavke = stavke;
+    }
     
     
 
@@ -66,40 +98,82 @@ public class Racun extends ApstraktniDomenskiObjekat{
 
     @Override
     public String join() {
-                return "JOIN recepcioner r ON rac.idRacuna = r.idRecepcioner JOIN narucilac_usluge nu ON o.idNarucilacUsluge = nu.idNarucilacUsluge JOIN mesto m ON m.idMesto = nu.idMesto";
+                 return " JOIN recepcioner r ON rac.idRecepcioner = r.idRecepcioner " +
+               " JOIN gost g ON rac.idGost = g.idGost ";
 
     }
 
-    @Override
-    public ArrayList<ApstraktniDomenskiObjekat> getList(ResultSet rs) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+   @Override
+public ArrayList<ApstraktniDomenskiObjekat> getList(ResultSet rs) throws SQLException {
+    ArrayList<ApstraktniDomenskiObjekat> list = new ArrayList<>();
+    while (rs.next()) {
+        Recepcioner r = new Recepcioner(
+            rs.getInt("r.idRecepcioner"),
+            rs.getString("r.ime"),
+            rs.getString("r.prezime"),
+            rs.getString("r.korisnickoIme"),
+            rs.getString("r.email"),
+            rs.getString("r.sifra")
+        );
 
-    @Override
-    public String columnsForInsert() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+        Drzavljanstvo d = new Drzavljanstvo(
+            rs.getInt("g.idDrzavljanstvo"),
+            rs.getString("d.drzava")
+        );
 
-    @Override
-    public String requirement() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Gost g = new Gost(
+            rs.getInt("g.idGost"),
+            rs.getString("g.ime"),
+            rs.getString("g.prezime"),
+            rs.getString("g.email"),
+            d
+        );
+
+        Racun rac = new Racun();
+        rac.setIdRacuna(rs.getInt("rac.idRacuna"));
+        rac.setDatumIzdavanja(rs.getDate("rac.datumIzdavanja"));
+        rac.setUkupniIznos(rs.getDouble("rac.ukupniIznos"));
+        rac.setRecepcioner(r);
+        rac.setGost(g);
+        list.add(rac);
     }
+    rs.close();
+    return list;
+}
 
     @Override
     public String valuesForInsert() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    return "'" + new java.sql.Date(datumIzdavanja.getTime()) + "', "
+         + ukupniIznos + ", "
+         + recepcioner.getIdRecepcioner() + ", "
+         + gost.getIdGost();
     }
+
+
 
     @Override
     public String valuesForUpdate() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    return " datumIzdavanja = '" + new java.sql.Date(datumIzdavanja.getTime()) + "', "
+         + "ukupniIznos = " + ukupniIznos + ", "
+         + "idRecepcioner = " + recepcioner.getIdRecepcioner() + ", "
+         + "idGost = " + gost.getIdGost();
     }
 
+     @Override
+    public String columnsForInsert() {
+            return "(datumIzdavanja, ukupniIznos, idRecepcioner, idGost)";    
+    }
+
+    
     @Override
     public String requirementForSelect(Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return "";
     }
-    
-    
+
+   
+    @Override
+    public String requirement() {
+        return "";
+    }
     
 }

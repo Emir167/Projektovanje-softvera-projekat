@@ -128,14 +128,14 @@ public class Recepcioner extends ApstraktniDomenskiObjekat implements Serializab
     }
 
     @Override
-    public String requirement() {
-        return "idRecepcioner = " + idRecepcioner;
+    public String valuesForInsert() {
+    return "'" + ime + "','" + prezime + "','" + korisnickoIme + "','" + email + "','" + sifra + "'";
     }
 
-    @Override
-    public String valuesForInsert() {
-        return ime + "'','" + prezime + "','" + korisnickoIme+  "','" + email + "','" + sifra + "'";
-    }
+@Override
+    public String requirement() {
+    return "idRecepcioner=" + idRecepcioner; 
+    }      
 
     @Override
     public String valuesForUpdate() {

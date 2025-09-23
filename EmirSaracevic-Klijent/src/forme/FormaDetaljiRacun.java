@@ -35,7 +35,7 @@ public class FormaDetaljiRacun extends javax.swing.JDialog {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jTableStavkeRacuna = new javax.swing.JTable();
         jLabel6 = new javax.swing.JLabel();
         jTextFieldUkupnaCena = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
@@ -52,7 +52,7 @@ public class FormaDetaljiRacun extends javax.swing.JDialog {
 
         jLabel5.setText("Gost:");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jTableStavkeRacuna.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -63,7 +63,7 @@ public class FormaDetaljiRacun extends javax.swing.JDialog {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(jTableStavkeRacuna);
 
         jLabel6.setText("UKUPNO:");
 
@@ -165,7 +165,7 @@ public class FormaDetaljiRacun extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTableStavkeRacuna;
     private javax.swing.JTextField jTextFieldUkupnaCena;
     // End of variables declaration//GEN-END:variables
 }

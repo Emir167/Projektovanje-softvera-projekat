@@ -4,6 +4,7 @@
  */
 package session;
 
+import domain.Recepcioner;
 import java.io.IOException;
 import java.net.Socket;
 
@@ -15,6 +16,7 @@ public class Session {
     
     private static Session instance;
     private Socket socket;
+    private Recepcioner ulogovani;
     
     private Session() {
         try {
@@ -34,6 +36,16 @@ public class Session {
     public Socket getSocket() {
         return socket;
     } 
+
+    public Recepcioner getUlogovani() {
+        return ulogovani;
+    }
+
+    public void setUlogovani(Recepcioner ulogovani) {
+        this.ulogovani = ulogovani;
+    }
+
+    
     
     
     

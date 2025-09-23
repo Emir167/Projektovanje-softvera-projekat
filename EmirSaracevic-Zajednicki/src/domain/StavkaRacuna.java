@@ -110,7 +110,7 @@ public class StavkaRacuna extends ApstraktniDomenskiObjekat {
 
     @Override
     public String requirementForSelect(Object o) {
-        int racunId = (int) o;
-        return "WHERE r.idRacuna=" + racunId;
+    int racunId = (int) o;
+    return " WHERE sr.idRacuna=" + racunId;
     }
 }

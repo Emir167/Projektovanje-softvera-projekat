@@ -115,26 +115,32 @@ public class ServerskaForma extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonPokreniServerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPokreniServerActionPerformed
-         if (threadServer == null || !threadServer.isAlive()) {
+         
+        if (threadServer == null || !threadServer.isAlive()) {
             threadServer = new ThreadServer();
             threadServer.start();
             jLabelStatus.setText("Server je pokrenut!");
-            jButtonPokreniServer.setEnabled(true);
-            jButtonZaustaviServer.setEnabled(false);
+            jButtonPokreniServer.setEnabled(false); 
+            jButtonZaustaviServer.setEnabled(true);
         }
     }//GEN-LAST:event_jButtonPokreniServerActionPerformed
 
     private void jButtonZaustaviServerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonZaustaviServerActionPerformed
-        if (threadServer.getServerSocket() != null && threadServer.getServerSocket().isBound()) {
-            try {
-                threadServer.getServerSocket().close();
-                JOptionPane.showMessageDialog(this, "Server je ugasen!");
-                this.dispose();
-                System.exit(0);
-            } catch (IOException ex) {
-                Logger.getLogger(ServerskaForma.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
+         try {
+           if (threadServer != null && threadServer.getServerSocket() != null &&
+               !threadServer.getServerSocket().isClosed()) {
+               threadServer.getServerSocket().close();
+           }
+           jLabelStatus.setText("Server je ugasen!");
+           jButtonPokreniServer.setEnabled(true);
+           jButtonZaustaviServer.setEnabled(false);
+           
+           JOptionPane.showMessageDialog(this, "Server je ugasen!");
+           this.dispose();
+       } catch (IOException ex) {
+           Logger.getLogger(ServerskaForma.class.getName()).log(Level.SEVERE, null, ex);
+           JOptionPane.showMessageDialog(this, "Greška pri gašenju servera: " + ex.getMessage());
+       }
 
     }//GEN-LAST:event_jButtonZaustaviServerActionPerformed
 
