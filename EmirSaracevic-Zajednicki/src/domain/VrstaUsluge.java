@@ -54,14 +54,20 @@ public class VrstaUsluge extends ApstraktniDomenskiObjekat {
 
     @Override @SuppressWarnings("unchecked")
     public String requirementForSelect(Object o) {
-        if (o == null) return "";
-        HashMap<Integer, String> q = (HashMap<Integer, String>) o;
-        int key = q.keySet().iterator().next();
-        switch (key) {
-            case 1: return "ORDER BY nazivUsluge ASC";
-            case 2: return "ORDER BY nazivUsluge DESC";
-            case 3: return "WHERE nazivUsluge LIKE '" + q.get(key) + "%'";
-            default: return "";
+         if (o == null) return "";
+
+        if (o instanceof VrstaUsluge) {
+            VrstaUsluge v = (VrstaUsluge) o;
+
+        if (v.getIdUsluge() > 0) {
+            return " WHERE vu.idUsluge = " + v.getIdUsluge();
         }
+
+        if (v.getNazivUsluge() != null && !v.getNazivUsluge().isBlank()) {
+            String naziv = v.getNazivUsluge().replace("'", "''");
+            return " WHERE vu.nazivUsluge LIKE '" + naziv + "%'";
+        }
+    }
+        return "";
     }
 }

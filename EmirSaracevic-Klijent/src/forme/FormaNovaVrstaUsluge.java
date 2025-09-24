@@ -4,6 +4,10 @@
  */
 package forme;
 
+import controller.KlijentController;
+import domain.VrstaUsluge;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author korisnk
@@ -32,10 +36,10 @@ public class FormaNovaVrstaUsluge extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        jTextFieldNazivUsluge = new javax.swing.JTextField();
+        jTextFieldCena = new javax.swing.JTextField();
+        jButtonDodajUslugu = new javax.swing.JButton();
+        jButtonOtkazi = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -45,15 +49,25 @@ public class FormaNovaVrstaUsluge extends javax.swing.JDialog {
 
         jLabel3.setText("Podrazumevana cena:");
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        jTextFieldNazivUsluge.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                jTextFieldNazivUslugeActionPerformed(evt);
             }
         });
 
-        jButton1.setText("DODAJ USLUGU");
+        jButtonDodajUslugu.setText("DODAJ USLUGU");
+        jButtonDodajUslugu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonDodajUsluguActionPerformed(evt);
+            }
+        });
 
-        jButton2.setText("OTKAZI");
+        jButtonOtkazi.setText("OTKAZI");
+        jButtonOtkazi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonOtkaziActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -69,14 +83,14 @@ public class FormaNovaVrstaUsluge extends javax.swing.JDialog {
                             .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextField1)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE))))
+                            .addComponent(jTextFieldNazivUsluge)
+                            .addComponent(jTextFieldCena, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(157, Short.MAX_VALUE)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButtonOtkazi, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButtonDodajUslugu, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -88,24 +102,68 @@ public class FormaNovaVrstaUsluge extends javax.swing.JDialog {
                         .addComponent(jLabel1)
                         .addGap(39, 39, 39)
                         .addComponent(jLabel2))
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextFieldNazivUsluge, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextFieldCena, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButtonDodajUslugu, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonOtkazi, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(26, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void jTextFieldNazivUslugeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldNazivUslugeActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_jTextFieldNazivUslugeActionPerformed
+
+    private void jButtonOtkaziActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonOtkaziActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_jButtonOtkaziActionPerformed
+
+    private void jButtonDodajUsluguActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDodajUsluguActionPerformed
+            try {
+        String naziv = jTextFieldNazivUsluge.getText().trim();
+        if (naziv.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Naziv je obavezan!", "Greška", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        String cenaStr = jTextFieldCena.getText().trim().replace(',', '.');
+        if (cenaStr.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Cena je obavezna!", "Greška", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        double cena;
+        try {
+            cena = Double.parseDouble(cenaStr);
+        } catch (NumberFormatException nfe) {
+            JOptionPane.showMessageDialog(this, "Cena mora biti broj (npr. 1200 ili 1200.50).", "Greška", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (cena < 0) {
+            JOptionPane.showMessageDialog(this, "Cena ne može biti negativna.", "Greška", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        VrstaUsluge vu = new VrstaUsluge();
+        vu.setNazivUsluge(naziv);
+        vu.setCena(cena);
+
+        KlijentController.getInstance().unesiUslugu(vu);
+
+        JOptionPane.showMessageDialog(this, "Usluga uspešno dodata.");
+        this.dispose();
+    } catch (Exception ex) {
+        JOptionPane.showMessageDialog(this, "Greška: " + ex.getMessage(), "Greška", JOptionPane.ERROR_MESSAGE);
+    }
+    }//GEN-LAST:event_jButtonDodajUsluguActionPerformed
 
     /**
      * @param args the command line arguments
@@ -145,12 +203,12 @@ public class FormaNovaVrstaUsluge extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButtonDodajUslugu;
+    private javax.swing.JButton jButtonOtkazi;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField jTextFieldCena;
+    private javax.swing.JTextField jTextFieldNazivUsluge;
     // End of variables declaration//GEN-END:variables
 }

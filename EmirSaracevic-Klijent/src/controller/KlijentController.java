@@ -1,8 +1,10 @@
 package controller;
 
+import domain.Drzavljanstvo;
 import domain.Gost;
 import domain.Racun;
 import domain.Recepcioner;
+import domain.StavkaRacuna;
 import domain.StrucnaSprema;
 import domain.VrstaUsluge;
 import java.io.ObjectInputStream;
@@ -116,4 +118,16 @@ public class KlijentController {
     public void deleteVrstaUsluge(VrstaUsluge v) throws Exception {
         sendRequest(Operacije.USLUGA_OBRISI, v);
     }
+    public ArrayList<StavkaRacuna> getAllStavkaRacuna(Racun idRacuna) throws Exception {
+            return (ArrayList<StavkaRacuna>) sendRequest(Operacije.STAVKA_RACUNA_GET_ALL, idRacuna);
+    }
+
+    public ArrayList<Drzavljanstvo> getAllDrzavljanstvo() throws Exception {
+            return (ArrayList<Drzavljanstvo>) sendRequest(Operacije.DRZAVLJANSTVO_GET_ALL, null);
+    }
+
+    public void unesiUslugu(VrstaUsluge vu) throws Exception {
+    sendRequest(Operacije.USLUGA_UNESI, vu);
+    }
+
 }

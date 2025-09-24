@@ -10,6 +10,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import operacije.Operacije;
+import static operacije.Operacije.RECEPCIONER_GET_ALL;
 import operacije.Status;
 import transfer.KlijentskiZahtev;
 import transfer.ServerskiOdgovor;
@@ -24,17 +25,16 @@ public class ThreadClient extends Thread {
 
     @Override
     public void run() {
-        try (ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-             ObjectInputStream  in  = new ObjectInputStream(socket.getInputStream())) {
-
+        try {
             while (!socket.isClosed()) {
-                Object obj = in.readObject();
-                if (!(obj instanceof KlijentskiZahtev)) break;
 
-                KlijentskiZahtev request = (KlijentskiZahtev) obj;
-                ServerskiOdgovor response = handleRequest(request);
+                ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+                KlijentskiZahtev req = (KlijentskiZahtev) in.readObject();
 
-                out.writeObject(response);
+                ServerskiOdgovor resp = handle(req);
+
+                ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+                out.writeObject(resp);
                 out.flush();
             }
         } catch (Exception e) {
@@ -42,70 +42,48 @@ public class ThreadClient extends Thread {
         }
     }
 
-    private ServerskiOdgovor handleRequest(KlijentskiZahtev request) {
+    private ServerskiOdgovor handle(KlijentskiZahtev request) {
         ServerskiOdgovor response = new ServerskiOdgovor(null, null, Status.Success);
         try {
             Operacije op = request.getOperacija();
             Object p = request.getParam();
 
             switch (op) {
-                
                 case LOGIN: {
                     Recepcioner creds = (Recepcioner) p;
                     Recepcioner ulogovani = ServerController.getInstance().login(creds);
                     response.setOdgovor(ulogovani);
                     break;
                 }
-
-                
                 case RECEPCIONER_GET_ALL:
                     response.setOdgovor(ServerController.getInstance().getAllRecepcioner());
                     break;
 
-                
-                case GOST_KREIRAJ:
-                    ServerController.getInstance().kreirajGosta((Gost) p);
-                    break;
-                case GOST_PRETRAZI:
-                    response.setOdgovor(ServerController.getInstance().pretraziGoste(p));
-                    break;
-                case GOST_IZMENI:
-                    ServerController.getInstance().izmeniGosta((Gost) p);
-                    break;
-                case GOST_OBRISI:
-                    ServerController.getInstance().obrisiGosta((Gost) p);
-                    break;
+                case GOST_KREIRAJ:  ServerController.getInstance().kreirajGosta((Gost) p); break;
+                case GOST_PRETRAZI: response.setOdgovor(ServerController.getInstance().pretraziGoste(p)); break;
+                case GOST_IZMENI:   ServerController.getInstance().izmeniGosta((Gost) p); break;
+                case GOST_OBRISI:   ServerController.getInstance().obrisiGosta((Gost) p); break;
 
-                
-                case RACUN_KREIRAJ:
-                    ServerController.getInstance().kreirajRacun((Racun) p);
-                    break;
-                case RACUN_PRETRAZI:
-                    response.setOdgovor(ServerController.getInstance().pretraziRacune(p));
-                    break;
-                case RACUN_IZMENI:
-                    ServerController.getInstance().izmeniRacun((Racun) p);
-                    break;
+                case RACUN_KREIRAJ: ServerController.getInstance().kreirajRacun((Racun) p); break;
+                case RACUN_PRETRAZI:response.setOdgovor(ServerController.getInstance().pretraziRacune(p)); break;
+                case RACUN_IZMENI:  ServerController.getInstance().izmeniRacun((Racun) p); break;
 
-                
-                case STRUCNA_SPREMA_UNESI:
-                    ServerController.getInstance().unesiStrucnuSpremu((StrucnaSprema) p);
-                    break;
-                    
-                case USLUGA_UNESI:
-                    ServerController.getInstance().unesiUslugu((VrstaUsluge) p);
-                    break;
-                case USLUGA_PRETRAZI:
-                    response.setOdgovor(ServerController.getInstance().getAllUsluga());
-                    break;
-                case USLUGA_IZMENI:
-                    ServerController.getInstance().izmeniUslugu((VrstaUsluge) p);
-                    break;
-                case USLUGA_OBRISI:
-                    ServerController.getInstance().obrisiUslugu((VrstaUsluge) p);
-                    break;
+                case STRUCNA_SPREMA_UNESI: ServerController.getInstance().unesiStrucnuSpremu((StrucnaSprema) p); break;
+
+                case USLUGA_UNESI:   ServerController.getInstance().unesiUslugu((VrstaUsluge) p); break;
+                case USLUGA_PRETRAZI:response.setOdgovor(ServerController.getInstance().getAllUsluga()); break;
+                case USLUGA_IZMENI:  ServerController.getInstance().izmeniUslugu((VrstaUsluge) p); break;
+                case USLUGA_OBRISI:  ServerController.getInstance().obrisiUslugu((VrstaUsluge) p); break;
+                case STAVKA_RACUNA_GET_ALL:
+                        int racunId = (int) p;
+                        response.setOdgovor(ServerController.getInstance().getAllStavkaRacuna(racunId));
+                        break;
+                        
+                case DRZAVLJANSTVO_GET_ALL:
+                        response.setOdgovor(ServerController.getInstance().getAllDrzavljanstvo());
+                        break;
                 default:
-                    throw new UnsupportedOperationException("Nepodržana operacija: " + op);
+                    throw new UnsupportedOperationException("Nepodrzana operacija: " + op);
             }
         } catch (Exception ex) {
             response.setResponseStatus(Status.Error);

@@ -4,6 +4,10 @@
  */
 package forme;
 
+import controller.KlijentController;
+import domain.StrucnaSprema;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author korisnk
@@ -32,8 +36,10 @@ public class FormaDodajStrucnaSprema extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jTextFieldNazivSpreme = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        jButtonDodajSpremu = new javax.swing.JButton();
+        jButtonOtkazi = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        jTextFieldStepenObrazovanja = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -41,57 +47,99 @@ public class FormaDodajStrucnaSprema extends javax.swing.JDialog {
 
         jLabel2.setText("Naziv spreme:");
 
-        jButton1.setText("DODAJ");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jButtonDodajSpremu.setText("DODAJ");
+        jButtonDodajSpremu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jButtonDodajSpremuActionPerformed(evt);
             }
         });
 
-        jButton2.setText("OTKAZI");
+        jButtonOtkazi.setText("OTKAZI");
+        jButtonOtkazi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonOtkaziActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setText("Stepen obrazovanja:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton2)
-                .addGap(37, 37, 37)
-                .addComponent(jButton1)
-                .addGap(33, 33, 33))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButtonOtkazi)
+                        .addGap(31, 31, 31)
+                        .addComponent(jButtonDodajSpremu)
+                        .addGap(37, 37, 37))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(37, 37, 37)
-                        .addComponent(jTextFieldNazivSpreme, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(116, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(88, 88, 88))
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(10, 10, 10)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(jTextFieldNazivSpreme, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
+                                        .addComponent(jTextFieldStepenObrazovanja)))))
+                        .addContainerGap(110, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel2)
-                    .addComponent(jTextFieldNazivSpreme, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(21, 21, 21)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
-                .addContainerGap(27, Short.MAX_VALUE))
+                    .addComponent(jLabel2)
+                    .addComponent(jTextFieldNazivSpreme, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(15, 15, 15)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(jTextFieldStepenObrazovanja, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButtonOtkazi)
+                    .addComponent(jButtonDodajSpremu))
+                .addGap(14, 14, 14))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void jButtonDodajSpremuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDodajSpremuActionPerformed
+         try {
+        String naziv = jTextFieldNazivSpreme.getText();
+        String stepenObrazovanja = jTextFieldStepenObrazovanja.getText();
+        if (naziv.isEmpty() || stepenObrazovanja.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Sva polja su obavezna.", "Greska", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+
+        StrucnaSprema ss = new StrucnaSprema();
+        ss.setNaziv(naziv);
+        ss.setStepenObrazovanja(stepenObrazovanja); 
+
+        KlijentController.getInstance().addStrucnaSprema(ss);
+
+        JOptionPane.showMessageDialog(this, "Strucna sprema je uspesno dodata.");
+        dispose();
+    } catch (Exception ex) {
+        JOptionPane.showMessageDialog(this, "Greska: " + ex.getMessage(), "Greska", JOptionPane.ERROR_MESSAGE);
+    }
+    }//GEN-LAST:event_jButtonDodajSpremuActionPerformed
+
+    private void jButtonOtkaziActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonOtkaziActionPerformed
+            this.dispose();
+    }//GEN-LAST:event_jButtonOtkaziActionPerformed
 
     /**
      * @param args the command line arguments
@@ -131,10 +179,12 @@ public class FormaDodajStrucnaSprema extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButtonDodajSpremu;
+    private javax.swing.JButton jButtonOtkazi;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JTextField jTextFieldNazivSpreme;
+    private javax.swing.JTextField jTextFieldStepenObrazovanja;
     // End of variables declaration//GEN-END:variables
 }

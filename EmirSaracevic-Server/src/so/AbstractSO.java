@@ -1,7 +1,3 @@
-
-
-
-
 package so;
 
 import db.DBBroker;

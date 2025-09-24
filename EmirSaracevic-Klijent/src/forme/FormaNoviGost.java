@@ -4,6 +4,8 @@
  */
 package forme;
 
+import domain.Drzavljanstvo;
+
 /**
  *
  * @author korisnk
@@ -18,7 +20,16 @@ public class FormaNoviGost extends javax.swing.JDialog {
     public FormaNoviGost(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-    }
+        setTitle("Unos novog gosta");
+        setLocationRelativeTo(parent);
+
+        // akcije
+        jButtonZatvori.addActionListener(e -> dispose());
+        jButtonDodajGosta.addActionListener(e -> sacuvajGosta());
+
+        // popuna državljanstava
+        popuniDrzavljanstva();
+       }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -35,8 +46,8 @@ public class FormaNoviGost extends javax.swing.JDialog {
         jTextField2 = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jTextField3 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        jButtonZatvori = new javax.swing.JButton();
+        jButtonDodajGosta = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jComboBoxDrzavljanstvo = new javax.swing.JComboBox<>();
@@ -49,14 +60,14 @@ public class FormaNoviGost extends javax.swing.JDialog {
 
         jLabel3.setText("email:");
 
-        jButton1.setText("ZATVORI");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jButtonZatvori.setText("ZATVORI");
+        jButtonZatvori.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jButtonZatvoriActionPerformed(evt);
             }
         });
 
-        jButton2.setText("DODAJ GOSTA");
+        jButtonDodajGosta.setText("DODAJ GOSTA");
 
         jLabel4.setText("UNOS NOVOG GOSTA");
 
@@ -93,9 +104,9 @@ public class FormaNoviGost extends javax.swing.JDialog {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(90, 90, 90)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButtonZatvori, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jButtonDodajGosta, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -120,17 +131,17 @@ public class FormaNoviGost extends javax.swing.JDialog {
                     .addComponent(jComboBoxDrzavljanstvo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButtonZatvori, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonDodajGosta, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(17, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void jButtonZatvoriActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonZatvoriActionPerformed
+            this.dispose();
+    }//GEN-LAST:event_jButtonZatvoriActionPerformed
 
     /**
      * @param args the command line arguments
@@ -170,9 +181,9 @@ public class FormaNoviGost extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JComboBox<String> jComboBoxDrzavljanstvo;
+    private javax.swing.JButton jButtonDodajGosta;
+    private javax.swing.JButton jButtonZatvori;
+    private javax.swing.JComboBox<Drzavljanstvo> jComboBoxDrzavljanstvo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -182,4 +193,47 @@ public class FormaNoviGost extends javax.swing.JDialog {
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     // End of variables declaration//GEN-END:variables
+
+    private void sacuvajGosta() {
+        try {
+            String ime = jTextField1.getText().trim();
+            String prezime = jTextField2.getText().trim();
+            String email = jTextField3.getText().trim();
+            domain.Drzavljanstvo drz = (domain.Drzavljanstvo) jComboBoxDrzavljanstvo.getSelectedItem();
+
+            if (ime.isEmpty() || prezime.isEmpty() || email.isEmpty() || drz == null) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Sva polja su obavezna.");
+                return;
+            }
+            if (!email.contains("@")) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Neispravan e-mail.");
+                return;
+            }
+
+            domain.Gost g = new domain.Gost(0, ime, prezime, email, drz);
+            controller.KlijentController.getInstance().addGost(g);
+
+            javax.swing.JOptionPane.showMessageDialog(this, "Gost je uspesno dodat.");
+            dispose();
+        
+    } catch (Exception ex) {
+            ex.printStackTrace();
+            javax.swing.JOptionPane.showMessageDialog(this, "Greska pri dodavanju gosta: " + ex.getMessage());
+    }
+    }
+
+    private void popuniDrzavljanstva() {
+         try {
+            java.util.ArrayList<domain.Drzavljanstvo> lista =
+                    controller.KlijentController.getInstance().getAllDrzavljanstvo();
+            jComboBoxDrzavljanstvo.removeAllItems();
+            for (domain.Drzavljanstvo d : lista) {
+                jComboBoxDrzavljanstvo.addItem(d);
+            }
+    } catch (Exception ex) {
+            ex.printStackTrace();
+            javax.swing.JOptionPane.showMessageDialog(this, 
+                "Greska pri ucitavanju drzavljanstava: " + ex.getMessage());
+    }
+    }
 }

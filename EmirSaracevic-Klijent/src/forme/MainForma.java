@@ -4,6 +4,17 @@
  */
 package forme;
 
+import controller.KlijentController;
+import domain.Gost;
+import domain.Recepcioner;
+import domain.StavkaRacuna;
+import domain.VrstaUsluge;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import javax.swing.JOptionPane;
+import modeli.TableModelStavkeRacuna;
+
 /**
  *
  * @author korisnk
@@ -11,16 +22,50 @@ package forme;
 public class MainForma extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(MainForma.class.getName());
+    private static Recepcioner r;
+    private TableModelStavkeRacuna tmStavke;
 
+    
     /**
      * Creates new form MainForma
      */
-    public MainForma() {
+    public MainForma(Recepcioner r) {
         initComponents();
+        setLocationRelativeTo(null);
+        
+        jTextFieldUkupno.setEnabled(false);
+        jTextFieldDatum.setEnabled(false);
+        jTextFieldCenaUsluge.setEnabled(false);
+        
+        this.r = r;
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        jTextFieldDatum.setText(sdf.format(new Date()));
+        jTextFieldDatum.setEditable(false);
+        jLabelUlogovani.setText("Ulogovani recepcioner: " + r.getIme() + " " + r.getPrezime());
         setTitle("Hotel Borovi Sjenica");
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Racun"));
-
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Stavke racuna"));
+        
+        tmStavke = new TableModelStavkeRacuna();
+        jTableStavkeRacuna.setModel(tmStavke);
+        
+        
+        jTextFieldCenaUsluge.setEditable(false);
+
+        
+        popuniUsluge();
+        popuniGoste();
+        
+        jButtonDodajStavku.addActionListener(e -> dodajStavku());
+        jButtonObrisiStavku.addActionListener(e -> obrisiStavku());
+        jButton2.addActionListener(e -> izdajRacun());
+        
+      /*  jMenuItemDodajUslugu.addActionListener(e -> {
+        FormaNovaVrstaUsluge d = new FormaNovaVrstaUsluge(this, true);
+        d.setLocationRelativeTo(this);
+        d.setVisible(true);
+        popuniUsluge();
+});*/
     }
 
     /**
@@ -33,7 +78,7 @@ public class MainForma extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        jLabelUlogovani = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -58,7 +103,6 @@ public class MainForma extends javax.swing.JFrame {
         jMenuItemDodajGosta = new javax.swing.JMenuItem();
         jMenuItemPretraziGosta = new javax.swing.JMenuItem();
         jMenuRacun = new javax.swing.JMenu();
-        jMenuItemNoviRacun = new javax.swing.JMenuItem();
         jMenuItempretraziRacun = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         jMenuItemDodajUslugu = new javax.swing.JMenuItem();
@@ -72,7 +116,7 @@ public class MainForma extends javax.swing.JFrame {
 
         jLabel1.setText("HOTEL BOROVI SJENICA");
 
-        jLabel2.setText("Ulogovani recepcioner:");
+        jLabelUlogovani.setText("Ulogovani recepcioner:");
 
         jLabel3.setText("Gost:");
 
@@ -85,6 +129,12 @@ public class MainForma extends javax.swing.JFrame {
         jLabel7.setText("Cena usluge:");
 
         jLabel8.setText("Kolicina:");
+
+        jComboBoxVrstaUsluge.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxVrstaUslugeActionPerformed(evt);
+            }
+        });
 
         jTextFieldCenaUsluge.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -169,9 +219,9 @@ public class MainForma extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGap(0, 66, Short.MAX_VALUE)
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addGap(61, 61, 61))
         );
 
@@ -213,7 +263,7 @@ public class MainForma extends javax.swing.JFrame {
                     .addComponent(jLabel5))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(28, Short.MAX_VALUE))
+                .addContainerGap(34, Short.MAX_VALUE))
         );
 
         jMenuGost.setText("Gost");
@@ -227,14 +277,16 @@ public class MainForma extends javax.swing.JFrame {
         jMenuGost.add(jMenuItemDodajGosta);
 
         jMenuItemPretraziGosta.setText("Pretrazi gosta");
+        jMenuItemPretraziGosta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemPretraziGostaActionPerformed(evt);
+            }
+        });
         jMenuGost.add(jMenuItemPretraziGosta);
 
         jMenuBar1.add(jMenuGost);
 
         jMenuRacun.setText("Racun");
-
-        jMenuItemNoviRacun.setText("Novi racun");
-        jMenuRacun.add(jMenuItemNoviRacun);
 
         jMenuItempretraziRacun.setText("Pretrazi racun");
         jMenuRacun.add(jMenuItempretraziRacun);
@@ -244,6 +296,11 @@ public class MainForma extends javax.swing.JFrame {
         jMenu3.setText("Vrsta usluge");
 
         jMenuItemDodajUslugu.setText("Dodaj uslugu");
+        jMenuItemDodajUslugu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemDodajUsluguActionPerformed(evt);
+            }
+        });
         jMenu3.add(jMenuItemDodajUslugu);
 
         jMenuItemPretraziUslugu.setText("Pretrazi uslugu");
@@ -254,6 +311,11 @@ public class MainForma extends javax.swing.JFrame {
         jMenu4.setText("Strucna sprema");
 
         jMenuItemDodajSpremu.setText("Dodaj spremu");
+        jMenuItemDodajSpremu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemDodajSpremuActionPerformed(evt);
+            }
+        });
         jMenu4.add(jMenuItemDodajSpremu);
 
         jMenuBar1.add(jMenu4);
@@ -275,13 +337,13 @@ public class MainForma extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(360, 360, 360)
-                        .addComponent(jLabel1))
+                        .addComponent(jLabelUlogovani, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(16, 16, 16)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(420, 420, 420)
+                        .addComponent(jLabel1)))
                 .addContainerGap(54, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -290,10 +352,9 @@ public class MainForma extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel2)
+                .addComponent(jLabelUlogovani)
                 .addGap(18, 18, 18)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -308,48 +369,55 @@ public class MainForma extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextFieldKolicinaActionPerformed
 
     private void jMenuItemDodajGostaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemDodajGostaActionPerformed
-        // TODO add your handling code here:
+            FormaNoviGost gost = new FormaNoviGost(this, true);
+            gost.setLocationRelativeTo(this);
+            gost.setVisible(true);   
+            popuniGoste();  
     }//GEN-LAST:event_jMenuItemDodajGostaActionPerformed
+
+    private void jComboBoxVrstaUslugeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxVrstaUslugeActionPerformed
+        VrstaUsluge sel = (VrstaUsluge) jComboBoxVrstaUsluge.getSelectedItem();
+        if (sel != null) jTextFieldCenaUsluge.setText(String.valueOf(sel.getCena()));
+    }//GEN-LAST:event_jComboBoxVrstaUslugeActionPerformed
+
+    private void jMenuItemDodajUsluguActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemDodajUsluguActionPerformed
+            
+            FormaNovaVrstaUsluge formaUsluga = new FormaNovaVrstaUsluge(this, true);
+            formaUsluga.setVisible(true);
+            formaUsluga.setLocationRelativeTo(this);
+            popuniUsluge();   
+
+    }//GEN-LAST:event_jMenuItemDodajUsluguActionPerformed
+
+    private void jMenuItemDodajSpremuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemDodajSpremuActionPerformed
+        FormaDodajStrucnaSprema forma = new FormaDodajStrucnaSprema(this, true);
+        forma.setVisible(true);
+    }//GEN-LAST:event_jMenuItemDodajSpremuActionPerformed
+
+    private void jMenuItemPretraziGostaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemPretraziGostaActionPerformed
+        
+        FormaPretraziGost forma = new FormaPretraziGost(this, true);
+        forma.setVisible(true);
+
+    }//GEN-LAST:event_jMenuItemPretraziGostaActionPerformed
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new MainForma().setVisible(true));
-    }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButtonDodajStavku;
     private javax.swing.JButton jButtonObrisiStavku;
-    private javax.swing.JComboBox<String> jComboBoxGost;
-    private javax.swing.JComboBox<String> jComboBoxVrstaUsluge;
+    private javax.swing.JComboBox<Gost> jComboBoxGost;
+    private javax.swing.JComboBox<VrstaUsluge> jComboBoxVrstaUsluge;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabelUlogovani;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
@@ -358,7 +426,6 @@ public class MainForma extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemDodajGosta;
     private javax.swing.JMenuItem jMenuItemDodajSpremu;
     private javax.swing.JMenuItem jMenuItemDodajUslugu;
-    private javax.swing.JMenuItem jMenuItemNoviRacun;
     private javax.swing.JMenuItem jMenuItemOdjaviSe;
     private javax.swing.JMenuItem jMenuItemPretraziGosta;
     private javax.swing.JMenuItem jMenuItemPretraziUslugu;
@@ -373,4 +440,108 @@ public class MainForma extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldKolicina;
     private javax.swing.JTextField jTextFieldUkupno;
     // End of variables declaration//GEN-END:variables
+
+    private void popuniUsluge() {
+         try {
+            ArrayList<VrstaUsluge> usluge = KlijentController.getInstance().getAllVrstaUsluge();
+            jComboBoxVrstaUsluge.removeAllItems();
+            for (VrstaUsluge v : usluge) {
+                jComboBoxVrstaUsluge.addItem(v);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        
+    }
+
+    private void popuniGoste() {
+        try {
+            ArrayList<Gost> gosti = KlijentController.getInstance().getAllGost();
+            jComboBoxGost.removeAllItems();
+            for (Gost g : gosti) {
+                jComboBoxGost.addItem(g);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        }
+
+    private void dodajStavku() {
+          try {
+            VrstaUsluge vu = (VrstaUsluge) jComboBoxVrstaUsluge.getSelectedItem();
+            int kolicina = Integer.parseInt(jTextFieldKolicina.getText());
+            double cena = vu.getCena(); 
+            double iznos = cena * kolicina;
+
+            StavkaRacuna sr = new StavkaRacuna();
+            sr.setVrstaUsluge(vu);
+            sr.setKolicina(kolicina);
+            sr.setCenaUsluge(cena);
+            sr.setIznos(iznos);
+
+            tmStavke.dodajStavku(sr);
+            
+            jTextFieldUkupno.setText(String.valueOf(tmStavke.vratiUkupanIznos()));
+
+            jTextFieldKolicina.setText("");
+            jTextFieldCenaUsluge.setText(String.valueOf(cena));
+
+    } catch (NumberFormatException ex) {
+              JOptionPane.showMessageDialog(this, "Unesite ispravnu kolicinu!");
+    }
+    }
+
+    private void obrisiStavku() {
+        int row = jTableStavkeRacuna.getSelectedRow();
+        if (row >= 0) {
+        tmStavke.obrisiStavku(row);
+        jTextFieldUkupno.setText(String.valueOf(tmStavke.vratiUkupanIznos()));
+        } else {
+        JOptionPane.showMessageDialog(this, "Morate izabrati stavku za brisanje!");
+        }
+    }
+
+    private void izdajRacun() {
+    try {
+           Gost gost = (Gost) jComboBoxGost.getSelectedItem();
+           if (gost == null) {
+               JOptionPane.showMessageDialog(this, "Morate izabrati gosta.");
+               return;
+           }
+           if (tmStavke.getRowCount() == 0) {
+               JOptionPane.showMessageDialog(this, "Racun nema nijednu stavku.");
+               return;
+           }
+
+           SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+           Date datum = sdf.parse(jTextFieldDatum.getText());
+
+           double ukupno = tmStavke.vratiUkupanIznos();
+
+           domain.Racun racun = new domain.Racun();
+           racun.setDatumIzdavanja(datum);
+           racun.setUkupniIznos(ukupno);
+           racun.setRecepcioner(r);           
+           racun.setGost(gost);
+           racun.setStavke(new ArrayList<>(tmStavke.getStavke()));
+
+      
+           KlijentController.getInstance().addRacun(racun);
+
+           JOptionPane.showMessageDialog(this, "Racun je uspesno izdat.");
+           tmStavke.getStavke().clear();
+           tmStavke.fireTableDataChanged();
+           jTextFieldUkupno.setText("");
+           jTextFieldKolicina.setText("");
+           jTextFieldCenaUsluge.setText("");
+
+           jTextFieldDatum.setText(sdf.format(new Date()));
+
+       } catch (java.text.ParseException pe) {
+           JOptionPane.showMessageDialog(this, "Datum nije u formatu dd/MM/yyyy.");
+       } catch (Exception ex) {
+           ex.printStackTrace();
+           JOptionPane.showMessageDialog(this, "Greska pri izdavanju racuna: " + ex.getMessage());
+       }    
+    }
 }

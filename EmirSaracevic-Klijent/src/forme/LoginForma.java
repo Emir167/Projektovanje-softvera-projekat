@@ -23,6 +23,7 @@ public class LoginForma extends javax.swing.JFrame {
     public LoginForma() {
         initComponents();
         setLocationRelativeTo(null);
+        
     }
 
     /**
@@ -40,7 +41,7 @@ public class LoginForma extends javax.swing.JFrame {
         jPasswordFieldSIfra = new javax.swing.JPasswordField();
         jButtonUlogujSe = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        jButtonOdustani = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -61,7 +62,12 @@ public class LoginForma extends javax.swing.JFrame {
 
         jLabel4.setText("Dobrodosao/la! Unesite Vase korisnicko ime i sifru.");
 
-        jButton1.setText("ODUSTANI");
+        jButtonOdustani.setText("ODUSTANI");
+        jButtonOdustani.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonOdustaniActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -83,7 +89,7 @@ public class LoginForma extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jButton1)
+                .addComponent(jButtonOdustani)
                 .addGap(48, 48, 48)
                 .addComponent(jButtonUlogujSe, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(80, 80, 80))
@@ -104,7 +110,7 @@ public class LoginForma extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jButtonUlogujSe, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButtonOdustani, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(80, Short.MAX_VALUE))
         );
 
@@ -120,21 +126,33 @@ public class LoginForma extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Korisnicko ime i sifra moraju biti popunjeni!");
                 return;
             }
-
+            
+            System.out.println("1");
+            
             Recepcioner r = new Recepcioner();
             r.setKorisnickoIme(jTextFieldKorisnickoIme.getText());
             r.setSifra(String.valueOf(jPasswordFieldSIfra.getPassword()));
 
+            System.out.println(r.getKorisnickoIme()+" "+r.getSifra());
             Recepcioner recepcioner = KlijentController.getInstance().login(r);
+            System.out.println("2");
             Session.getInstance().setUlogovani(recepcioner);
-            
-            new MainForma().setVisible(true);
+            System.out.println("3");
+            JOptionPane.showMessageDialog(this, "Uspesna prijava: " + recepcioner.getIme() + " " + recepcioner.getPrezime());
+            System.out.println("4");
+            new MainForma(recepcioner).setVisible(true);
             this.dispose();
 
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, ex.getMessage());
-        }
+       } catch (Exception ex) {
+        ex.printStackTrace(); 
+
+        JOptionPane.showMessageDialog(this, "Greska", "Greska pri prijavi", JOptionPane.ERROR_MESSAGE);
+}
     }//GEN-LAST:event_jButtonUlogujSeActionPerformed
+
+    private void jButtonOdustaniActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonOdustaniActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_jButtonOdustaniActionPerformed
 
     /**
      * @param args the command line arguments
@@ -162,7 +180,7 @@ public class LoginForma extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButtonOdustani;
     private javax.swing.JButton jButtonUlogujSe;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

@@ -1,12 +1,15 @@
 package controller;
 
+import domain.Drzavljanstvo;
 import domain.Gost;
 import domain.Racun;
 import domain.Recepcioner;
+import domain.StavkaRacuna;
 import domain.StrucnaSprema;
 import domain.VrstaUsluge;
 
 import java.util.ArrayList;
+import so.drzavljanstvo.SOGetAllDrzavljanstvo;
 
 // SO paketi po tvojoj strukturi
 import so.login.SOLogin;
@@ -21,6 +24,7 @@ import so.racun.SOGetRacun;
 import so.racun.SOUpdateRacun;
 
 import so.recepcioner.SOGetAllRecepcioner;
+import so.stavkaRacuna.SOGetAllStavkaRacuna;
 
 import so.strucna_sprema.SOAddStrucnaSprema;
 import so.strucna_sprema.SOGetAllStrucnaSprema;
@@ -140,6 +144,16 @@ public class ServerController {
         so.templateExecute(new VrstaUsluge());
         return so.getLista();
     }
-   
+   public ArrayList<StavkaRacuna> getAllStavkaRacuna(int racunId) throws Exception {
+       SOGetAllStavkaRacuna so = new SOGetAllStavkaRacuna();
+       so.templateExecute(new StavkaRacuna(racunId, 0, null, 0, 0, 0)); 
+       return so.getLista();
+}
+
+    public Object getAllDrzavljanstvo() throws Exception {
+       SOGetAllDrzavljanstvo so = new SOGetAllDrzavljanstvo();
+        so.templateExecute(new Drzavljanstvo()); 
+        return so.getLista();
+    }
 }
    

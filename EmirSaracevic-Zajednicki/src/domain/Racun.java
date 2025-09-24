@@ -98,8 +98,9 @@ public class Racun extends ApstraktniDomenskiObjekat{
 
     @Override
     public String join() {
-                 return " JOIN recepcioner r ON rac.idRecepcioner = r.idRecepcioner " +
-               " JOIN gost g ON rac.idGost = g.idGost ";
+          return " JOIN recepcioner r ON rac.recepcioner = r.idRecepcioner " +
+           " JOIN gost g ON rac.gost = g.idGost " +
+           " JOIN drzavljanstvo d ON g.idDrzavljanstvo = d.idDrzavljanstvo ";
 
     }
 
@@ -155,13 +156,13 @@ public ArrayList<ApstraktniDomenskiObjekat> getList(ResultSet rs) throws SQLExce
     public String valuesForUpdate() {
     return " datumIzdavanja = '" + new java.sql.Date(datumIzdavanja.getTime()) + "', "
          + "ukupniIznos = " + ukupniIznos + ", "
-         + "idRecepcioner = " + recepcioner.getIdRecepcioner() + ", "
-         + "idGost = " + gost.getIdGost();
+         + "recepcioner = " + recepcioner.getIdRecepcioner() + ", "
+         + "gost = " + gost.getIdGost();
     }
 
      @Override
     public String columnsForInsert() {
-            return "(datumIzdavanja, ukupniIznos, idRecepcioner, idGost)";    
+            return "(datumIzdavanja, ukupniIznos, recepcioner, gost)";    
     }
 
     

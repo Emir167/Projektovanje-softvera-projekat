@@ -86,7 +86,7 @@ public class Gost extends ApstraktniDomenskiObjekat{
 
     @Override
     public String join() {
-        return "JOIN drzavljanstvo d ON g.idGost = d.idDrzavljanstvo";
+        return "JOIN drzavljanstvo d ON g.drzavljanstvo = d.idDrzavljanstvo";
     }
 
     @Override
@@ -113,12 +113,12 @@ public class Gost extends ApstraktniDomenskiObjekat{
 
     @Override
     public String toString() {
-        return "Gost{" + "idGost=" + idGost + ", ime=" + ime + ", prezime=" + prezime + ", email=" + email + ", drzavljanstvo=" + drzavljanstvo + '}';
+        return ime + " " + prezime;
     }
 
     @Override
     public String columnsForInsert() {
-        return "(ime,prezime,email)";
+        return "(ime,prezime,email, drzavljanstvo)";
     }
 
     @Override
@@ -138,27 +138,29 @@ public class Gost extends ApstraktniDomenskiObjekat{
 
     @Override
     public String requirementForSelect(Object o) {
-        HashMap<Integer, String> needSort = (HashMap<Integer, String>) o;
-        int key = needSort.keySet().iterator().next();
-        switch (key) {
-            case 0:
-                return "";
-            case 1:
-                return "ORDER BY g.ime ASC";
-            case 2:
-                return "ORDER BY g.ime DESC";
-            case 3:
-                return "ORDER BY g.prezime ASC";
-            case 4:
-                return "ORDER BY g.prezime DESC";
-            case 5:
-                return "ORDER BY d.drzava ASC";
-            case 6:
-                return "ORDER BY d.drzava DESC";
-            case 7:
-                return "WHERE g.email LIKE \"" + needSort.get(key) + "%\"";
+         if (o == null) return "";
 
+    if (o instanceof Gost) {
+        Gost g = (Gost) o;
+
+        if (g.getIdGost() > 0) {
+            return " WHERE g.idGost = " + g.getIdGost();
         }
+
+        // prioritet: ime -> prezime -> email (uzmi prvo što nije prazno)
+        if (g.getIme() != null && !g.getIme().isBlank()) {
+            String ime = g.getIme().replace("'", "''");
+            return " WHERE g.ime LIKE '" + ime + "%'";
+        }
+        if (g.getPrezime() != null && !g.getPrezime().isBlank()) {
+            String prezime = g.getPrezime().replace("'", "''");
+            return " WHERE g.prezime LIKE '" + prezime + "%'";
+        }
+        if (g.getEmail() != null && !g.getEmail().isBlank()) {
+            String email = g.getEmail().replace("'", "''");
+            return " WHERE g.email LIKE '" + email + "%'";
+        }
+    }
         return "";
     }    
 

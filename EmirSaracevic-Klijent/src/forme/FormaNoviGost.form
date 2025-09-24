@@ -60,9 +60,9 @@
           </Group>
           <Group type="102" attributes="0">
               <EmptySpace min="-2" pref="90" max="-2" attributes="0"/>
-              <Component id="jButton1" min="-2" pref="116" max="-2" attributes="0"/>
+              <Component id="jButtonZatvori" min="-2" pref="116" max="-2" attributes="0"/>
               <EmptySpace pref="44" max="32767" attributes="0"/>
-              <Component id="jButton2" min="-2" pref="116" max="-2" attributes="0"/>
+              <Component id="jButtonDodajGosta" min="-2" pref="116" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -93,8 +93,8 @@
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jButton1" alignment="3" min="-2" pref="38" max="-2" attributes="0"/>
-                  <Component id="jButton2" alignment="3" min="-2" pref="38" max="-2" attributes="0"/>
+                  <Component id="jButtonZatvori" alignment="3" min="-2" pref="38" max="-2" attributes="0"/>
+                  <Component id="jButtonDodajGosta" alignment="3" min="-2" pref="38" max="-2" attributes="0"/>
               </Group>
               <EmptySpace pref="17" max="32767" attributes="0"/>
           </Group>
@@ -123,15 +123,15 @@
     </Component>
     <Component class="javax.swing.JTextField" name="jTextField3">
     </Component>
-    <Component class="javax.swing.JButton" name="jButton1">
+    <Component class="javax.swing.JButton" name="jButtonZatvori">
       <Properties>
         <Property name="text" type="java.lang.String" value="ZATVORI"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonZatvoriActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="jButton2">
+    <Component class="javax.swing.JButton" name="jButtonDodajGosta">
       <Properties>
         <Property name="text" type="java.lang.String" value="DODAJ GOSTA"/>
       </Properties>
@@ -153,7 +153,7 @@
         </Property>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Drzavljanstvo&gt;"/>
       </AuxValues>
     </Component>
   </SubComponents>

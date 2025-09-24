@@ -42,6 +42,13 @@ public class Drzavljanstvo extends ApstraktniDomenskiObjekat{
     }
 
     @Override
+    public String toString() {
+        return drzava;
+    }
+
+    
+    
+    @Override
     public String tableName() {
         return "drzavljanstvo";
     }
