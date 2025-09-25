@@ -130,4 +130,7 @@ public class KlijentController {
     sendRequest(Operacije.USLUGA_UNESI, vu);
     }
 
+     public void logout(Recepcioner ulogovani) throws Exception {
+        sendRequest(Operacije.LOGOUT, ulogovani);
+    }
 }

@@ -5,6 +5,8 @@
 package forme;
 
 import domain.Drzavljanstvo;
+import domain.Gost;
+import java.awt.Frame;
 
 /**
  *
@@ -22,7 +24,7 @@ public class FormaNoviGost extends javax.swing.JDialog {
         initComponents();
         setTitle("Unos novog gosta");
         setLocationRelativeTo(parent);
-
+        jButtonIzmeniGosta.setVisible(false);
         // akcije
         jButtonZatvori.addActionListener(e -> dispose());
         jButtonDodajGosta.addActionListener(e -> sacuvajGosta());
@@ -31,6 +33,38 @@ public class FormaNoviGost extends javax.swing.JDialog {
         popuniDrzavljanstva();
        }
 
+    
+    int hiddenIdGost = 0;
+
+public FormaNoviGost(java.awt.Frame parent, boolean modal, domain.Gost selektovan) {
+    super(parent, modal);       
+    initComponents();
+    setTitle("Izmena gosta");
+    setLocationRelativeTo(parent);
+
+    jButtonDodajGosta.setVisible(false);
+    jButtonDodajGosta.setEnabled(false);
+    jButtonIzmeniGosta.setVisible(true);
+    jButtonIzmeniGosta.setEnabled(true);
+
+    popuniDrzavljanstva();
+    if(selektovan!=null){
+    hiddenIdGost = selektovan.getIdGost();
+    jTextFieldIme.setText(selektovan.getIme());
+    jTextFieldPrezime.setText(selektovan.getPrezime());
+    jTextFieldEmail.setText(selektovan.getEmail());
+    }
+    
+    int idDrz = (selektovan.getDrzavljanstvo() != null) ? selektovan.getDrzavljanstvo().getIdDrzavljanstvo() : -1;
+    for (int i = 0; i < jComboBoxDrzavljanstvo.getItemCount(); i++) {
+        domain.Drzavljanstvo d = jComboBoxDrzavljanstvo.getItemAt(i);
+        if (d != null && d.getIdDrzavljanstvo() == idDrz) {
+            jComboBoxDrzavljanstvo.setSelectedIndex(i);
+            break;
+            }
+    
+        }
+}
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -41,16 +75,17 @@ public class FormaNoviGost extends javax.swing.JDialog {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        jTextFieldIme = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        jTextFieldPrezime = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        jTextFieldEmail = new javax.swing.JTextField();
         jButtonZatvori = new javax.swing.JButton();
         jButtonDodajGosta = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jComboBoxDrzavljanstvo = new javax.swing.JComboBox<>();
+        jButtonIzmeniGosta = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -73,6 +108,13 @@ public class FormaNoviGost extends javax.swing.JDialog {
 
         jLabel5.setText("drzavljanstvo:");
 
+        jButtonIzmeniGosta.setText("IZMENI GOSTA");
+        jButtonIzmeniGosta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonIzmeniGostaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -85,28 +127,30 @@ public class FormaNoviGost extends javax.swing.JDialog {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jTextFieldIme, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jTextFieldPrezime, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 86, Short.MAX_VALUE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jTextField3, javax.swing.GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE)
+                                    .addComponent(jTextFieldEmail, javax.swing.GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE)
                                     .addComponent(jComboBoxDrzavljanstvo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(134, 134, 134)
-                        .addComponent(jLabel4)))
+                        .addComponent(jLabel4))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(31, 31, 31)
+                        .addComponent(jButtonZatvori, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButtonIzmeniGosta)
+                        .addGap(25, 25, 25)
+                        .addComponent(jButtonDodajGosta)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(90, 90, 90)
-                .addComponent(jButtonZatvori, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
-                .addComponent(jButtonDodajGosta, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -116,24 +160,25 @@ public class FormaNoviGost extends javax.swing.JDialog {
                 .addGap(14, 14, 14)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextFieldIme, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel2)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextFieldPrezime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(jComboBoxDrzavljanstvo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButtonDodajGosta, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonZatvori, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonDodajGosta, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(17, Short.MAX_VALUE))
+                    .addComponent(jButtonIzmeniGosta, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(17, 17, 17))
         );
 
         pack();
@@ -142,6 +187,32 @@ public class FormaNoviGost extends javax.swing.JDialog {
     private void jButtonZatvoriActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonZatvoriActionPerformed
             this.dispose();
     }//GEN-LAST:event_jButtonZatvoriActionPerformed
+
+    private void jButtonIzmeniGostaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonIzmeniGostaActionPerformed
+            try {
+            String ime = jTextFieldIme.getText().trim();
+            String prezime = jTextFieldPrezime.getText().trim();
+            String email = jTextFieldEmail.getText().trim();
+            domain.Drzavljanstvo drz = (domain.Drzavljanstvo) jComboBoxDrzavljanstvo.getSelectedItem();
+
+            if (ime.isEmpty() || prezime.isEmpty() || email.isEmpty() || drz == null) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Sva polja su obavezna.");
+                return;
+            }
+            if (!email.contains("@")) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Neispravan e-mail.");
+                return;
+            }
+            
+            domain.Gost izmenjen = new domain.Gost(hiddenIdGost, ime, prezime, email, drz);
+            controller.KlijentController.getInstance().updateGost(izmenjen);
+
+            javax.swing.JOptionPane.showMessageDialog(this, "Gost je uspesno izmenjen.");
+            this.dispose();  
+        } catch (Exception ex) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Greska: " + ex.getMessage());
+        }
+    }//GEN-LAST:event_jButtonIzmeniGostaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -182,6 +253,7 @@ public class FormaNoviGost extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonDodajGosta;
+    private javax.swing.JButton jButtonIzmeniGosta;
     private javax.swing.JButton jButtonZatvori;
     private javax.swing.JComboBox<Drzavljanstvo> jComboBoxDrzavljanstvo;
     private javax.swing.JLabel jLabel1;
@@ -189,16 +261,16 @@ public class FormaNoviGost extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
+    private javax.swing.JTextField jTextFieldEmail;
+    private javax.swing.JTextField jTextFieldIme;
+    private javax.swing.JTextField jTextFieldPrezime;
     // End of variables declaration//GEN-END:variables
 
     private void sacuvajGosta() {
         try {
-            String ime = jTextField1.getText().trim();
-            String prezime = jTextField2.getText().trim();
-            String email = jTextField3.getText().trim();
+            String ime = jTextFieldIme.getText().trim();
+            String prezime = jTextFieldPrezime.getText().trim();
+            String email = jTextFieldEmail.getText().trim();
             domain.Drzavljanstvo drz = (domain.Drzavljanstvo) jComboBoxDrzavljanstvo.getSelectedItem();
 
             if (ime.isEmpty() || prezime.isEmpty() || email.isEmpty() || drz == null) {

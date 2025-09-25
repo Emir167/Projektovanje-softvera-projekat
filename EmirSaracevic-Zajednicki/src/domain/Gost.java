@@ -91,25 +91,24 @@ public class Gost extends ApstraktniDomenskiObjekat{
 
     @Override
     public ArrayList<ApstraktniDomenskiObjekat> getList(ResultSet rs) throws SQLException {
-            ArrayList<ApstraktniDomenskiObjekat> lista = new ArrayList<>();
+        ArrayList<ApstraktniDomenskiObjekat> lista = new ArrayList<>();
 
-            while (rs.next()) {
-                int idGost = rs.getInt("g.idGost");
-                String ime = rs.getString("g.ime");
-                String prezime = rs.getString("g.prezime");
-                String email = rs.getString("g.email");
+        while (rs.next()) {
+             int idGost = rs.getInt("idGost");          
+             String ime = rs.getString("ime");
+             String prezime = rs.getString("prezime");
+             String email = rs.getString("email");
 
-                int idDrzavljanstvo = rs.getInt("d.idDrzavljanstvo");
-                String drzava = rs.getString("d.drzava");
-                Drzavljanstvo d = new Drzavljanstvo(idDrzavljanstvo, drzava);
-                
-                Gost g = new Gost(idGost, ime, prezime, email, drzavljanstvo);
-                lista.add(g);
+             int idDrzavljanstvo = rs.getInt("idDrzavljanstvo"); 
+             String drzava = rs.getString("drzava");
+             Drzavljanstvo d = new Drzavljanstvo(idDrzavljanstvo, drzava);
 
-            }
-
-        rs.close();
-        return lista;    }
+             Gost g = new Gost(idGost, ime, prezime, email, d);  
+             lista.add(g);
+         }
+         rs.close();
+         return lista;  
+    }
 
     @Override
     public String toString() {
@@ -133,37 +132,45 @@ public class Gost extends ApstraktniDomenskiObjekat{
 
     @Override
     public String valuesForUpdate() {
-        return "ime='" + ime + "',prezime='" + prezime + "',email='" + email + "',idDrzavljanstvo=" + drzavljanstvo.getIdDrzavljanstvo() + "'";
+            return "ime='" + ime + "', prezime='" + prezime + "', email='" + email
+            + "', drzavljanstvo=" + drzavljanstvo.getIdDrzavljanstvo();   
     }
 
     @Override
     public String requirementForSelect(Object o) {
-         if (o == null) return "";
-
-    if (o instanceof Gost) {
+         if (!(o instanceof Gost)) return "";
         Gost g = (Gost) o;
 
-        if (g.getIdGost() > 0) {
-            return " WHERE g.idGost = " + g.getIdGost();
+        if (g.getIdGost() > 0) return " WHERE g.idGost = " + g.getIdGost();
+
+        String ime = g.getIme() == null ? "" : g.getIme().trim().replace("'", "''");
+        String prezime = g.getPrezime() == null ? "" : g.getPrezime().trim().replace("'", "''");
+        Integer idDrz = (g.getDrzavljanstvo() != null) ? g.getDrzavljanstvo().getIdDrzavljanstvo() : null;
+
+        StringBuilder where = new StringBuilder();
+        boolean has = false;
+
+        if (!ime.isBlank() && !prezime.isBlank()) {
+            where.append(" WHERE g.ime LIKE '").append(ime).append("%'")
+                 .append(" AND g.prezime LIKE '").append(prezime).append("%'");
+            has = true;
+        } else {
+            if (!ime.isBlank()) {
+                where.append(" WHERE (g.ime LIKE '").append(ime).append("%' OR g.prezime LIKE '").append(ime).append("%')");
+                has = true;
+            }
+            if (!prezime.isBlank()) {
+                where.append(has ? " AND " : " WHERE")
+                     .append(" (g.prezime LIKE '").append(prezime).append("%' OR g.ime LIKE '").append(prezime).append("%')");
+                has = true;
+            }
         }
 
-        // prioritet: ime -> prezime -> email (uzmi prvo što nije prazno)
-        if (g.getIme() != null && !g.getIme().isBlank()) {
-            String ime = g.getIme().replace("'", "''");
-            return " WHERE g.ime LIKE '" + ime + "%'";
+        if (idDrz != null && idDrz > 0) {
+            where.append(has ? " AND " : " WHERE").append(" g.drzavljanstvo = ").append(idDrz);
         }
-        if (g.getPrezime() != null && !g.getPrezime().isBlank()) {
-            String prezime = g.getPrezime().replace("'", "''");
-            return " WHERE g.prezime LIKE '" + prezime + "%'";
-        }
-        if (g.getEmail() != null && !g.getEmail().isBlank()) {
-            String email = g.getEmail().replace("'", "''");
-            return " WHERE g.email LIKE '" + email + "%'";
-        }
+        return where.toString();
     }
-        return "";
-    }    
-
 
 
 }

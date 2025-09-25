@@ -4,6 +4,12 @@
  */
 package forme;
 
+import controller.KlijentController;
+import domain.Gost;
+import javax.swing.JOptionPane;
+import modeli.TableModelGost;
+import domain.Drzavljanstvo;
+
 /**
  *
  * @author korisnk
@@ -15,9 +21,21 @@ public class FormaPretraziGost extends javax.swing.JDialog {
     /**
      * Creates new form FormaPretraziGost
      */
+    private TableModelGost model;
     public FormaPretraziGost(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
+        setTitle("Pretrazi gosta");
         initComponents();
+        model = new TableModelGost();
+        jTableGosti.setModel(model);
+        jButtonpretraziGosta.addActionListener(e -> pretrazi());
+        jButtonObrisiGosta.addActionListener(e -> obrisiSelektovanog());
+        jButtonIzmeniGosta.addActionListener(e -> izmeniSelektovanog());
+
+        popuniDrzavljanstva();
+
+
+
     }
 
     /**
@@ -30,25 +48,29 @@ public class FormaPretraziGost extends javax.swing.JDialog {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jTextFieldImeIPrezimeGosta = new javax.swing.JTextField();
+        jTextFieldIme = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        jTableGosti = new javax.swing.JTable();
+        jButtonpretraziGosta = new javax.swing.JButton();
+        jButtonIzmeniGosta = new javax.swing.JButton();
+        jButtonObrisiGosta = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
+        jTextFieldPrezime = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jComboBoxDrzavljanstvo = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jLabel1.setText("Unesite ime i prezime gosta:");
+        jLabel1.setText("Ime:");
 
-        jTextFieldImeIPrezimeGosta.addActionListener(new java.awt.event.ActionListener() {
+        jTextFieldIme.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFieldImeIPrezimeGostaActionPerformed(evt);
+                jTextFieldImeActionPerformed(evt);
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jTableGosti.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -59,40 +81,64 @@ public class FormaPretraziGost extends javax.swing.JDialog {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(jTableGosti);
 
-        jButton1.setText("PRETRAZI");
+        jButtonpretraziGosta.setText("PRETRAZI");
+        jButtonpretraziGosta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonpretraziGostaActionPerformed(evt);
+            }
+        });
 
-        jButton2.setText("IZMENI GOSTA");
+        jButtonIzmeniGosta.setText("IZMENI GOSTA");
+        jButtonIzmeniGosta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonIzmeniGostaActionPerformed(evt);
+            }
+        });
 
-        jButton3.setText("OBRISI GOSTA");
+        jButtonObrisiGosta.setText("OBRISI GOSTA");
 
         jLabel2.setText("PRETRAZI GOSTA");
+
+        jTextFieldPrezime.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldPrezimeActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setText("Prezime:");
+
+        jLabel4.setText("Drzavljanstvo:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton2)
-                .addGap(49, 49, 49)
-                .addComponent(jButton3)
-                .addGap(40, 40, 40))
             .addGroup(layout.createSequentialGroup()
                 .addGap(27, 27, 27)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 808, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jButtonIzmeniGosta)
+                        .addGap(27, 27, 27)
+                        .addComponent(jButtonObrisiGosta))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 464, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextFieldImeIPrezimeGosta, javax.swing.GroupLayout.PREFERRED_SIZE, 439, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(60, 60, 60)
-                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap(30, Short.MAX_VALUE))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jTextFieldIme)
+                                    .addComponent(jTextFieldPrezime, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
+                                    .addComponent(jComboBoxDrzavljanstvo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGap(66, 66, 66)
+                        .addComponent(jButtonpretraziGosta, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -102,23 +148,54 @@ public class FormaPretraziGost extends javax.swing.JDialog {
                 .addGap(23, 23, 23)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jTextFieldImeIPrezimeGosta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldIme, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jTextFieldPrezime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3)
+                    .addComponent(jButtonpretraziGosta, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(jComboBoxDrzavljanstvo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButtonIzmeniGosta, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonObrisiGosta, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(15, 15, 15))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextFieldImeIPrezimeGostaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldImeIPrezimeGostaActionPerformed
+    private void jTextFieldImeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldImeActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldImeIPrezimeGostaActionPerformed
+    }//GEN-LAST:event_jTextFieldImeActionPerformed
+
+    private void jButtonpretraziGostaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonpretraziGostaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonpretraziGostaActionPerformed
+
+    private void jButtonIzmeniGostaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonIzmeniGostaActionPerformed
+        int row = jTableGosti.getSelectedRow();
+       /* if (row < 0) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Izaberi gosta iz tabele.");
+            return;
+        }*/
+
+        modeli.TableModelGost tm = (modeli.TableModelGost) jTableGosti.getModel();
+        domain.Gost selektovan = tm.getGostAt(row);  
+
+        FormaNoviGost dlg = new FormaNoviGost((java.awt.Frame) getParent(), true, selektovan);
+        dlg.setLocationRelativeTo(this);
+        dlg.setVisible(true);
+    }//GEN-LAST:event_jButtonIzmeniGostaActionPerformed
+
+    private void jTextFieldPrezimeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldPrezimeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldPrezimeActionPerformed
 
     /**
      * @param args the command line arguments
@@ -158,13 +235,84 @@ public class FormaPretraziGost extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButtonIzmeniGosta;
+    private javax.swing.JButton jButtonObrisiGosta;
+    private javax.swing.JButton jButtonpretraziGosta;
+    private javax.swing.JComboBox<Drzavljanstvo> jComboBoxDrzavljanstvo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextFieldImeIPrezimeGosta;
+    private javax.swing.JTable jTableGosti;
+    private javax.swing.JTextField jTextFieldIme;
+    private javax.swing.JTextField jTextFieldPrezime;
     // End of variables declaration//GEN-END:variables
+
+    private void pretrazi() {
+            try {
+            String ime = jTextFieldIme.getText().trim();
+            String prezime = jTextFieldPrezime.getText().trim();
+            domain.Drzavljanstvo drz = (domain.Drzavljanstvo) jComboBoxDrzavljanstvo.getSelectedItem();
+
+            Gost gost = new Gost();
+            if (!ime.isEmpty()) gost.setIme(ime);
+            if (!prezime.isEmpty()) gost.setPrezime(prezime);
+            if (drz != null) gost.setDrzavljanstvo(drz);
+
+            java.util.ArrayList<Gost> lista = controller.KlijentController.getInstance().searchGost(gost);
+            model.setData(lista);
+        } catch (Exception ex) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Greska pri pretrazi: " + ex.getMessage());
+        }
+    }
+
+    private void obrisiSelektovanog() {
+        int row = jTableGosti.getSelectedRow();
+        if (row < 0) { JOptionPane.showMessageDialog(this, "Izaberi gosta za brisanje."); return; }
+
+        Gost g = model.getGostAt(row);
+        int potv = JOptionPane.showConfirmDialog(this,"Obrisati gosta " + g + "?", "Potvrda", JOptionPane.YES_NO_OPTION);
+        if (potv != JOptionPane.YES_OPTION) return;
+
+        try {
+            KlijentController.getInstance().deleteGost(g); 
+            model.removeRow(row);                          
+            JOptionPane.showMessageDialog(this, "Gost obrisan.");
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Greska pri brisanju: " + ex.getMessage());
+        }
+    }
+
+    private void izmeniSelektovanog() {
+        int row = jTableGosti.getSelectedRow();
+        if (row < 0) {
+            JOptionPane.showMessageDialog(this, "Izaberi gosta iz tabele.");
+            return;
+        }
+
+        Gost selektovan = model.getGostAt(row);
+        if (selektovan == null) {
+            JOptionPane.showMessageDialog(this, "Nije moguce procitati selektovanog gosta.");
+            return;
+        }
+
+        FormaNoviGost dlg = new FormaNoviGost((java.awt.Frame) getParent(), true, selektovan);
+        dlg.setLocationRelativeTo(this);
+        dlg.setVisible(true);  
+
+        pretrazi(); 
+    }
+
+    private void popuniDrzavljanstva() {
+         try {
+            java.util.ArrayList<domain.Drzavljanstvo> lista =
+            controller.KlijentController.getInstance().getAllDrzavljanstvo();
+            jComboBoxDrzavljanstvo.removeAllItems();
+            jComboBoxDrzavljanstvo.addItem(null); 
+            for (domain.Drzavljanstvo d : lista) jComboBoxDrzavljanstvo.addItem(d);
+    } catch (Exception ex) {
+        javax.swing.JOptionPane.showMessageDialog(this,"Greska pri ucitavanju drzavljanstava: " + ex.getMessage());
+    }
+    }
 }

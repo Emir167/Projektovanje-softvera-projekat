@@ -82,6 +82,10 @@ public class ThreadClient extends Thread {
                 case DRZAVLJANSTVO_GET_ALL:
                         response.setOdgovor(ServerController.getInstance().getAllDrzavljanstvo());
                         break;
+                case LOGOUT:
+                    Recepcioner ulogovani = (Recepcioner) request.getParam();
+                    ServerController.getInstance().logout(ulogovani);
+                    break;
                 default:
                     throw new UnsupportedOperationException("Nepodrzana operacija: " + op);
             }

@@ -12,8 +12,11 @@ import domain.VrstaUsluge;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import modeli.TableModelStavkeRacuna;
+import session.Session;
 
 /**
  *
@@ -24,7 +27,7 @@ public class MainForma extends javax.swing.JFrame {
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(MainForma.class.getName());
     private static Recepcioner r;
     private TableModelStavkeRacuna tmStavke;
-
+    private Recepcioner ulogovani;
     
     /**
      * Creates new form MainForma
@@ -32,7 +35,7 @@ public class MainForma extends javax.swing.JFrame {
     public MainForma(Recepcioner r) {
         initComponents();
         setLocationRelativeTo(null);
-        
+        this.ulogovani = Session.getInstance().getUlogovani();
         jTextFieldUkupno.setEnabled(false);
         jTextFieldDatum.setEnabled(false);
         jTextFieldCenaUsluge.setEnabled(false);
@@ -106,7 +109,6 @@ public class MainForma extends javax.swing.JFrame {
         jMenuItempretraziRacun = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         jMenuItemDodajUslugu = new javax.swing.JMenuItem();
-        jMenuItemPretraziUslugu = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         jMenuItemDodajSpremu = new javax.swing.JMenuItem();
         jMenu5 = new javax.swing.JMenu();
@@ -187,12 +189,10 @@ public class MainForma extends javax.swing.JFrame {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 576, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jButtonDodajStavku, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButtonObrisiStavku, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(31, Short.MAX_VALUE))
+                    .addComponent(jButtonDodajStavku, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonObrisiStavku, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(35, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -200,9 +200,7 @@ public class MainForma extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(53, 53, 53)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButtonDodajStavku, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButtonObrisiStavku, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jButtonDodajStavku, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(16, 16, 16)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -219,7 +217,8 @@ public class MainForma extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(0, 66, Short.MAX_VALUE)
+                        .addComponent(jButtonObrisiStavku, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addGap(61, 61, 61))
@@ -244,7 +243,7 @@ public class MainForma extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(96, 96, 96))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -289,22 +288,24 @@ public class MainForma extends javax.swing.JFrame {
         jMenuRacun.setText("Racun");
 
         jMenuItempretraziRacun.setText("Pretrazi racun");
+        jMenuItempretraziRacun.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItempretraziRacunActionPerformed(evt);
+            }
+        });
         jMenuRacun.add(jMenuItempretraziRacun);
 
         jMenuBar1.add(jMenuRacun);
 
         jMenu3.setText("Vrsta usluge");
 
-        jMenuItemDodajUslugu.setText("Dodaj uslugu");
+        jMenuItemDodajUslugu.setText("Izmeni uslugu");
         jMenuItemDodajUslugu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemDodajUsluguActionPerformed(evt);
             }
         });
         jMenu3.add(jMenuItemDodajUslugu);
-
-        jMenuItemPretraziUslugu.setText("Pretrazi uslugu");
-        jMenu3.add(jMenuItemPretraziUslugu);
 
         jMenuBar1.add(jMenu3);
 
@@ -323,6 +324,11 @@ public class MainForma extends javax.swing.JFrame {
         jMenu5.setText("Odjava");
 
         jMenuItemOdjaviSe.setText("Odjavi se");
+        jMenuItemOdjaviSe.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemOdjaviSeActionPerformed(evt);
+            }
+        });
         jMenu5.add(jMenuItemOdjaviSe);
 
         jMenuBar1.add(jMenu5);
@@ -334,17 +340,15 @@ public class MainForma extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabelUlogovani, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(16, 16, 16)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(420, 420, 420)
-                        .addComponent(jLabel1)))
-                .addContainerGap(54, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(jLabelUlogovani, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addGap(388, 388, 388))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -401,6 +405,31 @@ public class MainForma extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jMenuItemPretraziGostaActionPerformed
 
+    private void jMenuItempretraziRacunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItempretraziRacunActionPerformed
+        
+        FormaPretraziRacun forma = new FormaPretraziRacun(this, true);
+        forma.setVisible(true);
+
+    }//GEN-LAST:event_jMenuItempretraziRacunActionPerformed
+
+    private void jMenuItemOdjaviSeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemOdjaviSeActionPerformed
+        int result = JOptionPane.showConfirmDialog(this, "Da li ste sigurni da zelite da se odjavite?", "Konfirmacija", JOptionPane.YES_NO_OPTION);
+
+        if (result == JOptionPane.NO_OPTION) {
+            return;
+        }
+
+        if (result == JOptionPane.YES_OPTION) {
+            try {
+                KlijentController.getInstance().logout(ulogovani);
+                new LoginForma().setVisible(true);
+                Session.getInstance().setUlogovani(null);
+                this.dispose();
+            } catch (Exception ex) {
+                Logger.getLogger(MainForma.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }    }//GEN-LAST:event_jMenuItemOdjaviSeActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -428,7 +457,6 @@ public class MainForma extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemDodajUslugu;
     private javax.swing.JMenuItem jMenuItemOdjaviSe;
     private javax.swing.JMenuItem jMenuItemPretraziGosta;
-    private javax.swing.JMenuItem jMenuItemPretraziUslugu;
     private javax.swing.JMenuItem jMenuItempretraziRacun;
     private javax.swing.JMenu jMenuRacun;
     private javax.swing.JPanel jPanel1;

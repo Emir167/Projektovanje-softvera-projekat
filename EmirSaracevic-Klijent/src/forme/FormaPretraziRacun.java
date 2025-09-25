@@ -18,6 +18,8 @@ public class FormaPretraziRacun extends javax.swing.JDialog {
     public FormaPretraziRacun(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        jComboBoxStavkeKriterijuma.setEnabled(false);
+        jComboBoxStavkeKriterijuma.setVisible(false);
     }
 
     /**
@@ -30,17 +32,20 @@ public class FormaPretraziRacun extends javax.swing.JDialog {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
+        jTableRacuni = new javax.swing.JTable();
+        jButtonDetaljiRacuna = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jComboBoxGost = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jComboBoxVrstaUsluge = new javax.swing.JComboBox<>();
+        jComboBoxKriterijum = new javax.swing.JComboBox<>();
+        jTextFieldDatumOd = new javax.swing.JTextField();
+        jComboBoxStavkeKriterijuma = new javax.swing.JComboBox<>();
+        jTextFieldDatumDo = new javax.swing.JTextField();
+        jLabelDatumOd = new javax.swing.JLabel();
+        jLabelDatumDo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jTableRacuni.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -51,41 +56,61 @@ public class FormaPretraziRacun extends javax.swing.JDialog {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(jTableRacuni);
 
-        jButton1.setText("DETALJI RACUNA");
+        jButtonDetaljiRacuna.setText("DETALJI RACUNA");
 
-        jLabel1.setText("Gost:");
+        jLabel1.setText("Filtriraj racun prema:");
 
         jLabel2.setText("PRETRAZI RACUN");
 
-        jLabel3.setText("Vrsta usluge:");
+        jComboBoxKriterijum.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "racunu", "recepcioneru", "gostu", "vrsti usluge" }));
+        jComboBoxKriterijum.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxKriterijumActionPerformed(evt);
+            }
+        });
+
+        jLabelDatumOd.setText("Datum od:");
+
+        jLabelDatumDo.setText("Datum do:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(320, 320, 320)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(32, 32, 32)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jComboBoxGost, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(194, 194, 194)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBoxVrstaUsluge, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(86, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 695, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jComboBoxKriterijum, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addComponent(jLabelDatumOd, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jTextFieldDatumOd, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jComboBoxStavkeKriterijuma, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabelDatumDo, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jTextFieldDatumDo, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGap(320, 320, 320)
+                        .addComponent(jButtonDetaljiRacuna, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(265, 265, 265))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(86, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 695, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(84, 84, 84))
         );
         layout.setVerticalGroup(
@@ -93,21 +118,69 @@ public class FormaPretraziRacun extends javax.swing.JDialog {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+                .addGap(34, 34, 34)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBoxGost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3)
-                    .addComponent(jComboBoxVrstaUsluge, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(26, 26, 26)
+                    .addComponent(jComboBoxKriterijum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBoxStavkeKriterijuma, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextFieldDatumOd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldDatumDo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelDatumOd)
+                    .addComponent(jLabelDatumDo))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton1)
+                .addComponent(jButtonDetaljiRacuna)
                 .addGap(18, 18, 18))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jComboBoxKriterijumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxKriterijumActionPerformed
+        
+        String kriterijum = (String) jComboBoxKriterijum.getSelectedItem();
+        switch (kriterijum) {
+            case "racunu":
+                jComboBoxStavkeKriterijuma.setEnabled(false);
+                jComboBoxStavkeKriterijuma.setVisible(false);
+                jLabelDatumOd.setVisible(true);
+                jTextFieldDatumDo.setVisible(true);
+                jTextFieldDatumOd.setVisible(true);
+                jLabelDatumDo.setVisible(true);
+                break;
+            case "recepcioneru":
+                jLabelDatumOd.setVisible(false);
+                jTextFieldDatumDo.setVisible(false);
+                jTextFieldDatumOd.setVisible(false);
+                jLabelDatumDo.setVisible(false);
+                jComboBoxStavkeKriterijuma.setEnabled(true);
+                jComboBoxStavkeKriterijuma.setVisible(true);
+                break;
+            case "gostu":
+                jLabelDatumOd.setVisible(false);
+                jTextFieldDatumDo.setVisible(false);
+                jTextFieldDatumOd.setVisible(false);
+                jLabelDatumDo.setVisible(false);
+                jComboBoxStavkeKriterijuma.setEnabled(true);
+                jComboBoxStavkeKriterijuma.setVisible(true);
+                break;
+            case "vrsti usluge":
+                jLabelDatumOd.setVisible(false);
+                jTextFieldDatumDo.setVisible(false);
+                jTextFieldDatumOd.setVisible(false);
+                jLabelDatumDo.setVisible(false);
+                jComboBoxStavkeKriterijuma.setEnabled(true);
+                jComboBoxStavkeKriterijuma.setVisible(true);
+                break;    
+                
+            default:
+                throw new AssertionError();
+        }
+
+    }//GEN-LAST:event_jComboBoxKriterijumActionPerformed
 
     /**
      * @param args the command line arguments
@@ -147,13 +220,16 @@ public class FormaPretraziRacun extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JComboBox<String> jComboBoxGost;
-    private javax.swing.JComboBox<String> jComboBoxVrstaUsluge;
+    private javax.swing.JButton jButtonDetaljiRacuna;
+    private javax.swing.JComboBox<String> jComboBoxKriterijum;
+    private javax.swing.JComboBox<String> jComboBoxStavkeKriterijuma;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabelDatumDo;
+    private javax.swing.JLabel jLabelDatumOd;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTableRacuni;
+    private javax.swing.JTextField jTextFieldDatumDo;
+    private javax.swing.JTextField jTextFieldDatumOd;
     // End of variables declaration//GEN-END:variables
 }

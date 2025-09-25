@@ -33,5 +33,7 @@ public enum Operacije {
     USLUGA_UNESI,     
     USLUGA_PRETRAZI,   
     USLUGA_IZMENI,     
-    USLUGA_OBRISI     
+    USLUGA_OBRISI,
+    
+    LOGOUT;     
 }
