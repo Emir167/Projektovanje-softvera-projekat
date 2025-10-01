@@ -23,7 +23,6 @@ import so.racun.SOGetRacun;
 import so.racun.SOUpdateRacun;
 
 import so.recepcioner.SOGetAllRecepcioner;
-import so.stavkaRacuna.SOGetAllStavkaRacuna;
 
 import so.strucna_sprema.SOAddStrucnaSprema;
 import so.strucna_sprema.SOGetAllStrucnaSprema;
@@ -143,16 +142,24 @@ public class ServerController {
         so.templateExecute(new VrstaUsluge());
         return so.getLista();
     }
-   public ArrayList<StavkaRacuna> getAllStavkaRacuna(int racunId) throws Exception {
-       SOGetAllStavkaRacuna so = new SOGetAllStavkaRacuna();
-       so.templateExecute(new StavkaRacuna(racunId, 0, null, 0, 0, 0)); 
-       return so.getLista();
-}
+
 
     public Object getAllDrzavljanstvo() throws Exception {
        SOGetAllDrzavljanstvo so = new SOGetAllDrzavljanstvo();
         so.templateExecute(new Drzavljanstvo()); 
         return so.getLista();
     }
+    
+    public Racun getRacunById(int id) throws Exception {
+    SOGetRacun so = new SOGetRacun();
+    Racun filter = new Racun();
+    filter.setIdRacuna(id);
+    so.templateExecute(filter);
+
+    ArrayList<Racun> lista = so.getLista(); 
+    if (lista.isEmpty()) return null;
+    return lista.get(0);  
+    }
+    
 }
    

@@ -21,13 +21,12 @@ public enum Operacije {
     RACUN_PRETRAZI,
     RACUN_IZMENI,
 
-    STAVKA_RACUNA_GET_ALL,
-
-    
     RECEPCIONER_GET_ALL,
 
     STRUCNA_SPREMA_UNESI,
-
+    
+    RACUN_GET_ONE,
+    
     DRZAVLJANSTVO_GET_ALL,
     
     USLUGA_UNESI,     

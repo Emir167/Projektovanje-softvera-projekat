@@ -4,6 +4,7 @@
  */
 package forme;
 
+import controller.KlijentController;
 import domain.Racun;
 import domain.VrstaUsluge;
 import java.time.LocalDate;
@@ -217,59 +218,28 @@ public class FormaPretraziRacun extends javax.swing.JDialog {
         
         int viewRow = jTableRacuni.getSelectedRow();
         if (viewRow == -1) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Izaberi racun iz tabele.");
+            JOptionPane.showMessageDialog(this, "Izaberi racun iz tabele.");
             return;
         }
         int modelRow = jTableRacuni.convertRowIndexToModel(viewRow);
-
         TableModelRacun tm = (TableModelRacun) jTableRacuni.getModel();
-        domain.Racun selektovan = tm.getAt(modelRow);
+        Racun osnovni = tm.getAt(modelRow);
 
-        FormaDetaljiRacuna forma = new FormaDetaljiRacuna(null, true, selektovan);
-        forma.setLocationRelativeTo(this);
-        forma.setVisible(true);
+        Racun racunSaStavkama;
+        try {
+            racunSaStavkama = KlijentController.getInstance().getRacunById(osnovni.getIdRacuna());
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Ne mogu da ucitam stavke za racun.");
+            return;
+        }
+
+        FormaDetaljiRacuna d = new FormaDetaljiRacuna(null, true, racunSaStavkama);
+        d.setLocationRelativeTo(this);
+        d.setVisible(true);
         
         
     }//GEN-LAST:event_jButtonDetaljiRacunaActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                FormaPretraziRacun dialog = new FormaPretraziRacun(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
-    
-    
     private java.time.format.DateTimeFormatter DF = java.time.format.DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
     private java.time.LocalDate parseDateOrError(String txt, String fieldName) {
@@ -332,21 +302,24 @@ private void ucitajSveRacune() {
 
     private void applyFilter() {
         String kriterijum = (String) jComboBoxKriterijum.getSelectedItem();
-        List<domain.Racun> rezultat = new ArrayList<>();
+    List<domain.Racun> rezultat = new ArrayList<>();
 
     try {
         switch (kriterijum) {
+
             case "racunu": {
                 java.time.LocalDate ldOd = parseDateOrError(jTextFieldDatumOd.getText(), "Datum od");
                 if (ldOd == null) return;
                 java.time.LocalDate ldDo = parseDateOrError(jTextFieldDatumDo.getText(), "Datum do");
                 if (ldDo == null) return;
-                if (ldOd.isAfter(ldDo)) { showError("'Datum od' ne moze biti posle 'Datum do'."); return; }
+                if (ldOd.isAfter(ldDo)) { 
+                    showError("'Datum od' ne moze biti posle 'Datum do'."); 
+                    return; 
+                }
 
-                java.time.ZoneId Z = java.time.ZoneId.systemDefault();
                 for (domain.Racun r : sviRacuni) {
                     java.time.LocalDate d = toLocalDate(r.getDatumIzdavanja());
-
+                    if (d == null) continue; 
                     if (!d.isBefore(ldOd) && !d.isAfter(ldDo)) {
                         rezultat.add(r);
                     }
@@ -356,12 +329,15 @@ private void ucitajSveRacune() {
 
             case "gostu": {
                 Object sel = jComboBoxStavkeKriterijuma.getSelectedItem();
-                if (!(sel instanceof domain.Gost)) { showError("Greska, gost nije odabran!"); return; }
+                if (!(sel instanceof domain.Gost)) { 
+                    showError("Greska, gost nije odabran!"); 
+                    return; 
+                }
 
                 Racun filter = new Racun();
                 filter.setGost((domain.Gost) sel);
 
-                java.util.ArrayList<domain.Racun> lista =
+                ArrayList<domain.Racun> lista =
                         controller.KlijentController.getInstance().getAllRacun(filter);
 
                 setTableData(lista);
@@ -370,7 +346,10 @@ private void ucitajSveRacune() {
 
             case "recepcioneru": {
                 Object sel = jComboBoxStavkeKriterijuma.getSelectedItem();
-                if (!(sel instanceof domain.Recepcioner)) { showError("Izaberi recepcionera."); return; }
+                if (!(sel instanceof domain.Recepcioner)) { 
+                    showError("Izaberi recepcionera."); 
+                    return; 
+                }
                 int rid = ((domain.Recepcioner) sel).getIdRecepcioner();
 
                 for (domain.Racun r : sviRacuni) {
@@ -383,23 +362,43 @@ private void ucitajSveRacune() {
 
             case "vrsti usluge": {
                 Object sel = jComboBoxStavkeKriterijuma.getSelectedItem();
-                if (!(sel instanceof domain.VrstaUsluge)) { showError("Izaberi vrstu usluge."); return; }
-                int vid = ((domain.VrstaUsluge) sel).getIdUsluge();
+                if (!(sel instanceof domain.VrstaUsluge)) { 
+                    showError("Izaberi vrstu usluge."); 
+                    return; 
+                }
+                int trazeniIdUsluge = ((domain.VrstaUsluge) sel).getIdUsluge();
 
                 for (domain.Racun r : sviRacuni) {
-                    try {
-                        java.util.ArrayList<domain.StavkaRacuna> stavke =
-                                controller.KlijentController.getInstance().getAllStavkaRacuna(r.getIdRacuna());
-                        boolean ima = false;
-                        for (domain.StavkaRacuna s : stavke) {
-                            if (s.getVrstaUsluge() != null && s.getVrstaUsluge().getIdUsluge() == vid) {
-                                ima = true; break;
+                    boolean ima = false;
+
+                    if (r.getStavke() != null) {
+                        for (domain.StavkaRacuna s : r.getStavke()) {
+                            if (s.getVrstaUsluge() != null &&
+                                s.getVrstaUsluge().getIdUsluge() == trazeniIdUsluge) {
+                                ima = true;
+                                break;
                             }
                         }
-                        if (ima) rezultat.add(r);
-                    } catch (Exception e) {
-                        logger.log(java.util.logging.Level.WARNING, "Stavke ne mogu da se ucitaju za racun " + r.getIdRacuna(), e);
+                    } else {
+                        try {
+                            domain.Racun pun = controller.KlijentController
+                                    .getInstance().getRacunById(r.getIdRacuna());
+                            if (pun != null && pun.getStavke() != null) {
+                                for (domain.StavkaRacuna s : pun.getStavke()) {
+                                    if (s.getVrstaUsluge() != null &&
+                                        s.getVrstaUsluge().getIdUsluge() == trazeniIdUsluge) {
+                                        ima = true;
+                                        break;
+                                    }
+                                }
+                            }
+                        } catch (Exception e) {
+                            logger.log(java.util.logging.Level.WARNING,
+                                    "Ne mogu da dovucem stavke za racun " + r.getIdRacuna(), e);
+                        }
                     }
+
+                    if (ima) rezultat.add(r);
                 }
                 break;
             }

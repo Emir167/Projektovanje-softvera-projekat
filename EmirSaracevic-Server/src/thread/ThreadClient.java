@@ -74,11 +74,11 @@ public class ThreadClient extends Thread {
                 case USLUGA_PRETRAZI:response.setOdgovor(ServerController.getInstance().getAllUsluga()); break;
                 case USLUGA_IZMENI:  ServerController.getInstance().izmeniUslugu((VrstaUsluge) p); break;
                 case USLUGA_OBRISI:  ServerController.getInstance().obrisiUslugu((VrstaUsluge) p); break;
-                case STAVKA_RACUNA_GET_ALL:
-                        int racunId = (int) p;
-                        response.setOdgovor(ServerController.getInstance().getAllStavkaRacuna(racunId));
-                        break;
-                        
+                case RACUN_GET_ONE: {
+                    int id = (int) p;
+                    response.setOdgovor(ServerController.getInstance().getRacunById(id));
+                    break;
+                    }
                 case DRZAVLJANSTVO_GET_ALL:
                         response.setOdgovor(ServerController.getInstance().getAllDrzavljanstvo());
                         break;

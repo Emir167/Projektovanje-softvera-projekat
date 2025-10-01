@@ -118,9 +118,6 @@ public class KlijentController {
     public void deleteVrstaUsluge(VrstaUsluge v) throws Exception {
         sendRequest(Operacije.USLUGA_OBRISI, v);
     }
-    public ArrayList<StavkaRacuna> getAllStavkaRacuna(int idRacuna) throws Exception {
-            return (ArrayList<StavkaRacuna>) sendRequest(Operacije.STAVKA_RACUNA_GET_ALL, idRacuna);
-    }
 
     public ArrayList<Drzavljanstvo> getAllDrzavljanstvo() throws Exception {
             return (ArrayList<Drzavljanstvo>) sendRequest(Operacije.DRZAVLJANSTVO_GET_ALL, null);
@@ -132,5 +129,9 @@ public class KlijentController {
 
      public void logout(Recepcioner ulogovani) throws Exception {
         sendRequest(Operacije.LOGOUT, ulogovani);
+    }
+     
+    public Racun getRacunById(int id) throws Exception {
+        return (Racun) sendRequest(Operacije.RACUN_GET_ONE, id);
     }
 }

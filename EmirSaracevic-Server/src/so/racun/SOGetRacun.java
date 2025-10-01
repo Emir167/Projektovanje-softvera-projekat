@@ -32,6 +32,10 @@ public class SOGetRacun extends AbstractSO {
             ArrayList<StavkaRacuna> stavke = (ArrayList<StavkaRacuna>) (ArrayList<?>) stavkeADO;
             r.setStavke(stavke);
         }
+        
+        
+        
+        
     }
 
     public ArrayList<Racun> getLista() {

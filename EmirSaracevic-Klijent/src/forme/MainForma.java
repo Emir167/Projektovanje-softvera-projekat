@@ -22,7 +22,7 @@ import session.Session;
  *
  * @author korisnk
  */
-public class MainForma extends javax.swing.JFrame {
+ class MainForma extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(MainForma.class.getName());
     private static Recepcioner r;
@@ -80,7 +80,7 @@ public class MainForma extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
+        jLabelHotelBorovi = new javax.swing.JLabel();
         jLabelUlogovani = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
@@ -101,14 +101,12 @@ public class MainForma extends javax.swing.JFrame {
         jButtonDodajStavku = new javax.swing.JButton();
         jButtonIzdajRacun = new javax.swing.JButton();
         jComboBoxGost = new javax.swing.JComboBox<>();
-        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenuBar = new javax.swing.JMenuBar();
         jMenuGost = new javax.swing.JMenu();
         jMenuItemDodajGosta = new javax.swing.JMenuItem();
         jMenuItemPretraziGosta = new javax.swing.JMenuItem();
         jMenuRacun = new javax.swing.JMenu();
         jMenuItempretraziRacun = new javax.swing.JMenuItem();
-        jMenu3 = new javax.swing.JMenu();
-        jMenuItemDodajUslugu = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         jMenuItemDodajSpremu = new javax.swing.JMenuItem();
         jMenu5 = new javax.swing.JMenu();
@@ -116,7 +114,7 @@ public class MainForma extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setText("HOTEL BOROVI SJENICA");
+        jLabelHotelBorovi.setText("HOTEL BOROVI SJENICA");
 
         jLabelUlogovani.setText("Ulogovani recepcioner:");
 
@@ -200,9 +198,10 @@ public class MainForma extends javax.swing.JFrame {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 576, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButtonDodajStavku, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonIzdajRacun, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonObrisiStavku, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(jButtonObrisiStavku, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButtonDodajStavku, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE)))
                 .addContainerGap(35, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -232,7 +231,7 @@ public class MainForma extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
                         .addComponent(jButtonIzdajRacun, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addGap(61, 61, 61))
+                .addGap(57, 57, 57))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -273,7 +272,7 @@ public class MainForma extends javax.swing.JFrame {
                     .addComponent(jLabel5))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(34, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jMenuGost.setText("Gost");
@@ -294,7 +293,7 @@ public class MainForma extends javax.swing.JFrame {
         });
         jMenuGost.add(jMenuItemPretraziGosta);
 
-        jMenuBar1.add(jMenuGost);
+        jMenuBar.add(jMenuGost);
 
         jMenuRacun.setText("Racun");
 
@@ -306,19 +305,7 @@ public class MainForma extends javax.swing.JFrame {
         });
         jMenuRacun.add(jMenuItempretraziRacun);
 
-        jMenuBar1.add(jMenuRacun);
-
-        jMenu3.setText("Vrsta usluge");
-
-        jMenuItemDodajUslugu.setText("Izmeni uslugu");
-        jMenuItemDodajUslugu.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemDodajUsluguActionPerformed(evt);
-            }
-        });
-        jMenu3.add(jMenuItemDodajUslugu);
-
-        jMenuBar1.add(jMenu3);
+        jMenuBar.add(jMenuRacun);
 
         jMenu4.setText("Strucna sprema");
 
@@ -330,7 +317,7 @@ public class MainForma extends javax.swing.JFrame {
         });
         jMenu4.add(jMenuItemDodajSpremu);
 
-        jMenuBar1.add(jMenu4);
+        jMenuBar.add(jMenu4);
 
         jMenu5.setText("Odjava");
 
@@ -342,9 +329,9 @@ public class MainForma extends javax.swing.JFrame {
         });
         jMenu5.add(jMenuItemOdjaviSe);
 
-        jMenuBar1.add(jMenu5);
+        jMenuBar.add(jMenu5);
 
-        setJMenuBar(jMenuBar1);
+        setJMenuBar(jMenuBar);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -358,14 +345,14 @@ public class MainForma extends javax.swing.JFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
+                .addComponent(jLabelHotelBorovi)
                 .addGap(388, 388, 388))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabelHotelBorovi, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabelUlogovani)
                 .addGap(18, 18, 18)
@@ -394,15 +381,6 @@ public class MainForma extends javax.swing.JFrame {
         VrstaUsluge sel = (VrstaUsluge) jComboBoxVrstaUsluge.getSelectedItem();
         if (sel != null) jTextFieldCenaUsluge.setText(String.valueOf(sel.getCena()));
     }//GEN-LAST:event_jComboBoxVrstaUslugeActionPerformed
-
-    private void jMenuItemDodajUsluguActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemDodajUsluguActionPerformed
-            
-            FormaNovaVrstaUsluge formaUsluga = new FormaNovaVrstaUsluge(this, true);
-            formaUsluga.setVisible(true);
-            formaUsluga.setLocationRelativeTo(this);
-            popuniUsluge();   
-
-    }//GEN-LAST:event_jMenuItemDodajUsluguActionPerformed
 
     private void jMenuItemDodajSpremuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemDodajSpremuActionPerformed
         FormaDodajStrucnaSprema forma = new FormaDodajStrucnaSprema(this, true);
@@ -458,22 +436,20 @@ public class MainForma extends javax.swing.JFrame {
     private javax.swing.JButton jButtonObrisiStavku;
     private javax.swing.JComboBox<Gost> jComboBoxGost;
     private javax.swing.JComboBox<VrstaUsluge> jComboBoxVrstaUsluge;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabelHotelBorovi;
     private javax.swing.JLabel jLabelUlogovani;
-    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
-    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuBar jMenuBar;
     private javax.swing.JMenu jMenuGost;
     private javax.swing.JMenuItem jMenuItemDodajGosta;
     private javax.swing.JMenuItem jMenuItemDodajSpremu;
-    private javax.swing.JMenuItem jMenuItemDodajUslugu;
     private javax.swing.JMenuItem jMenuItemOdjaviSe;
     private javax.swing.JMenuItem jMenuItemPretraziGosta;
     private javax.swing.JMenuItem jMenuItempretraziRacun;

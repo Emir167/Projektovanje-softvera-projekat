@@ -147,5 +147,16 @@ public class Recepcioner extends ApstraktniDomenskiObjekat implements Serializab
         return "";
     }
     
-    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Recepcioner)) return false;
+        Recepcioner that = (Recepcioner) o;
+        return this.getIdRecepcioner() == that.getIdRecepcioner();
+    }
+
+    @Override
+    public int hashCode() {
+        return Integer.hashCode(getIdRecepcioner());
+    }
 }

@@ -171,6 +171,9 @@ public ArrayList<ApstraktniDomenskiObjekat> getList(ResultSet rs) throws SQLExce
         if (!(o instanceof Racun)) return "";
         Racun r = (Racun) o;
 
+        if (r.getIdRacuna() > 0) {
+            return " WHERE rac.idRacuna = " + r.getIdRacuna();
+        }
         if (r.getGost() != null && r.getGost().getIdGost() > 0) {
             return " WHERE rac.gost = " + r.getGost().getIdGost();
         }

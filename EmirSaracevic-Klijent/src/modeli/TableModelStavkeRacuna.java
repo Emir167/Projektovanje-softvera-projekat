@@ -31,7 +31,7 @@ public class TableModelStavkeRacuna extends AbstractTableModel {
 
     public TableModelStavkeRacuna(Racun racun) {
         try {
-            stavke = KlijentController.getInstance().getAllStavkaRacuna(racun.getIdRacuna());
+             this.stavke = racun.getStavke() != null ? racun.getStavke() : new ArrayList<>();
         } catch (Exception ex) {
             Logger.getLogger(TableModelStavkeRacuna.class.getName()).log(Level.SEVERE, null, ex);
         }
