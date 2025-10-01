@@ -22,6 +22,7 @@ public class FormaNovaVrstaUsluge extends javax.swing.JDialog {
     public FormaNovaVrstaUsluge(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        
     }
 
     /**

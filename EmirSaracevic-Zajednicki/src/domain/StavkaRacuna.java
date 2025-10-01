@@ -110,7 +110,20 @@ public class StavkaRacuna extends ApstraktniDomenskiObjekat {
 
     @Override
     public String requirementForSelect(Object o) {
-    int racunId = (int) o;
-    return " WHERE sr.idRacuna=" + racunId;
-    }
+    
+        Integer racunId = null;
+
+         if (o instanceof Integer) {
+             racunId = (Integer) o;
+         } else if (o instanceof Racun) {
+             racunId = ((Racun) o).getIdRacuna();
+         } else if (o instanceof StavkaRacuna) {
+             racunId = ((StavkaRacuna) o).getIdRacuna();
+         }
+
+         if (racunId != null && racunId > 0) {
+             return " WHERE sr.idRacuna = " + racunId;
+         }
+         return "";
+         }
 }

@@ -8,6 +8,7 @@ import controller.KlijentController;
 import domain.Racun;
 import domain.StavkaRacuna;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.AbstractTableModel;
@@ -18,8 +19,8 @@ import javax.swing.table.AbstractTableModel;
  */
 public class TableModelStavkeRacuna extends AbstractTableModel {
     
-    private final String[] kolone = {"Redni broj", "Kolicina", "Usluga", "Cena", "Iznos"};
-    private ArrayList<StavkaRacuna> stavke;
+    String[] kolone = {"Redni broj", "Usluga", "Kolicina", "Cena", "Iznos"};
+    List<StavkaRacuna> stavke;
     private int rb;
     
     
@@ -30,13 +31,12 @@ public class TableModelStavkeRacuna extends AbstractTableModel {
 
     public TableModelStavkeRacuna(Racun racun) {
         try {
-            stavke = KlijentController.getInstance().getAllStavkaRacuna(racun);
+            stavke = KlijentController.getInstance().getAllStavkaRacuna(racun.getIdRacuna());
         } catch (Exception ex) {
             Logger.getLogger(TableModelStavkeRacuna.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    
     @Override
     public int getRowCount() {
         return stavke.size();
@@ -56,9 +56,9 @@ public class TableModelStavkeRacuna extends AbstractTableModel {
             case 0:
                 return sr.getRb();
             case 1:
-                return sr.getKolicina();
-            case 2:
                 return sr.getVrstaUsluge().toString();
+            case 2:
+                return sr.getKolicina();
             case 3:
                 return sr.getCenaUsluge();
             case 4:
@@ -74,8 +74,6 @@ public class TableModelStavkeRacuna extends AbstractTableModel {
         return kolone[column];
     }
     
-    
-    
     private void reindex() {
         for (int i = 0; i < stavke.size(); i++) {
             stavke.get(i).setRb(i + 1); 
@@ -87,7 +85,6 @@ public class TableModelStavkeRacuna extends AbstractTableModel {
 
         int idUslugeNove = nova.getVrstaUsluge().getIdUsluge();
 
-        // 1) Proveri da li već postoji ta usluga -> spoji (uvećaj količinu i iznos)
         for (int i = 0; i < stavke.size(); i++) {
             StavkaRacuna postojeca = stavke.get(i);
             if (postojeca.getVrstaUsluge() != null &&
@@ -96,17 +93,15 @@ public class TableModelStavkeRacuna extends AbstractTableModel {
                 int novaKolicina = postojeca.getKolicina() + nova.getKolicina();
                 postojeca.setKolicina(novaKolicina);
 
-                double cena = postojeca.getCenaUsluge();   // zadrži postojeću jediničnu cenu
+                double cena = postojeca.getCenaUsluge();  
                 postojeca.setIznos(novaKolicina * cena);
 
-                // RB ostaje isti jer je to isti red/usluga
                 reindex();
                 fireTableRowsUpdated(i, i);
                 return;
             }
         }
 
-        // 2) Nije nađena – dodaj kao novu stavku i dodeli RB po poziciji
         stavke.add(nova);
         reindex();
         fireTableRowsInserted(stavke.size() - 1, stavke.size() - 1);
@@ -114,7 +109,7 @@ public class TableModelStavkeRacuna extends AbstractTableModel {
     public void obrisiStavku(int row) {
         if (row >= 0 && row < stavke.size()) {
             stavke.remove(row);
-            // Reindeksiranje rb
+
             rb = 0;
             for (StavkaRacuna s : stavke) {
                 s.setRb(++rb);
@@ -131,7 +126,7 @@ public class TableModelStavkeRacuna extends AbstractTableModel {
         return ukupno;
     }
 
-    public ArrayList<StavkaRacuna> getStavke() {
+    public List<StavkaRacuna> getStavke() {
         return stavke;
     }
 
@@ -143,6 +138,41 @@ public class TableModelStavkeRacuna extends AbstractTableModel {
         }
         return null;
     }
+
+    @Override
+    public boolean isCellEditable(int rowIndex, int columnIndex) {
+        
+        return columnIndex==2 || columnIndex==3;
+    }
+
+    @Override
+    public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+        StavkaRacuna sr = stavke.get(rowIndex);
+        try {
+            if (columnIndex == 2) {
+                int k = (aValue instanceof Number) ? ((Number) aValue).intValue()
+                                                    : Integer.parseInt(aValue.toString().trim());
+                if (k < 0) k = 0;
+                sr.setKolicina(k);
+            } else if (columnIndex == 3) { 
+                double c = (aValue instanceof Number) ? ((Number) aValue).doubleValue()
+                                                       : Double.parseDouble(aValue.toString().trim().replace(',', '.'));
+                if (c < 0) c = 0;
+                sr.setCenaUsluge(c);
+            } else {
+                return;
+            }
+
+            sr.setIznos(sr.getKolicina() * sr.getCenaUsluge());
+
+            fireTableCellUpdated(rowIndex, columnIndex); 
+            fireTableCellUpdated(rowIndex, 4);        
+        } catch (NumberFormatException ex) {
+            fireTableRowsUpdated(rowIndex, rowIndex);
+        }
+
+    }
+    
     
     
 }

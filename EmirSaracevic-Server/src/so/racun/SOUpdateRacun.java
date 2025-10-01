@@ -17,7 +17,7 @@ public class SOUpdateRacun extends AbstractSO {
         }
         Racun r = (Racun) ado;
         if (r.getIdRacuna() <= 0) {
-            throw new Exception("Racun mora imati važeći ID za izmenu.");
+            throw new Exception("Racun mora imati vazeci ID za izmenu.");
         }
         if (r.getStavke() == null || r.getStavke().isEmpty()) {
             throw new Exception("Racun mora imati bar jednu stavku.");

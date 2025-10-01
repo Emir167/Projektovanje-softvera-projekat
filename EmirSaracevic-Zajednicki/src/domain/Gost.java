@@ -94,16 +94,16 @@ public class Gost extends ApstraktniDomenskiObjekat{
         ArrayList<ApstraktniDomenskiObjekat> lista = new ArrayList<>();
 
         while (rs.next()) {
-             int idGost = rs.getInt("idGost");          
-             String ime = rs.getString("ime");
-             String prezime = rs.getString("prezime");
-             String email = rs.getString("email");
+            int idGost = rs.getInt("idGost");
+        String ime = rs.getString("ime");
+        String prezime = rs.getString("prezime");
+        String email = rs.getString("email");
 
-             int idDrzavljanstvo = rs.getInt("idDrzavljanstvo"); 
-             String drzava = rs.getString("drzava");
-             Drzavljanstvo d = new Drzavljanstvo(idDrzavljanstvo, drzava);
+        int idDrzavljanstvo = rs.getInt("idDrzavljanstvo");
+        String drzava = rs.getString("drzava");
+        Drzavljanstvo d = new Drzavljanstvo(idDrzavljanstvo, drzava);
 
-             Gost g = new Gost(idGost, ime, prezime, email, d);  
+        Gost g = new Gost(idGost, ime, prezime, email, d); 
              lista.add(g);
          }
          rs.close();

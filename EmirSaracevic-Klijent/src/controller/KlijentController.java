@@ -118,7 +118,7 @@ public class KlijentController {
     public void deleteVrstaUsluge(VrstaUsluge v) throws Exception {
         sendRequest(Operacije.USLUGA_OBRISI, v);
     }
-    public ArrayList<StavkaRacuna> getAllStavkaRacuna(Racun idRacuna) throws Exception {
+    public ArrayList<StavkaRacuna> getAllStavkaRacuna(int idRacuna) throws Exception {
             return (ArrayList<StavkaRacuna>) sendRequest(Operacije.STAVKA_RACUNA_GET_ALL, idRacuna);
     }
 

@@ -98,9 +98,9 @@ public class Racun extends ApstraktniDomenskiObjekat{
 
     @Override
     public String join() {
-          return " JOIN recepcioner r ON rac.recepcioner = r.idRecepcioner " +
+         return " JOIN recepcioner r ON rac.recepcioner = r.idRecepcioner " +
            " JOIN gost g ON rac.gost = g.idGost " +
-           " JOIN drzavljanstvo d ON g.idDrzavljanstvo = d.idDrzavljanstvo ";
+           " JOIN drzavljanstvo d ON g.drzavljanstvo = d.idDrzavljanstvo ";
 
     }
 
@@ -118,8 +118,8 @@ public ArrayList<ApstraktniDomenskiObjekat> getList(ResultSet rs) throws SQLExce
         );
 
         Drzavljanstvo d = new Drzavljanstvo(
-            rs.getInt("g.idDrzavljanstvo"),
-            rs.getString("d.drzava")
+        rs.getInt("d.idDrzavljanstvo"),
+        rs.getString("d.drzava")
         );
 
         Gost g = new Gost(
@@ -168,13 +168,19 @@ public ArrayList<ApstraktniDomenskiObjekat> getList(ResultSet rs) throws SQLExce
     
     @Override
     public String requirementForSelect(Object o) {
+        if (!(o instanceof Racun)) return "";
+        Racun r = (Racun) o;
+
+        if (r.getGost() != null && r.getGost().getIdGost() > 0) {
+            return " WHERE rac.gost = " + r.getGost().getIdGost();
+        }
         return "";
     }
 
    
     @Override
     public String requirement() {
-        return "";
+        return "idRacuna=" + idRacuna;
     }
     
 }

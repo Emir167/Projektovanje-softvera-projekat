@@ -218,6 +218,9 @@
         <Component class="javax.swing.JTextField" name="jTextFieldDatum">
         </Component>
         <Component class="javax.swing.JTextField" name="jTextFieldUkupno">
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextFieldUkupnoActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel5">
           <Properties>
@@ -250,7 +253,7 @@
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jButtonDodajStavku" min="-2" pref="115" max="-2" attributes="0"/>
-                          <Component id="jButton2" min="-2" pref="151" max="-2" attributes="0"/>
+                          <Component id="jButtonIzdajRacun" min="-2" pref="151" max="-2" attributes="0"/>
                           <Component id="jButtonObrisiStavku" min="-2" pref="112" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace pref="35" max="32767" attributes="0"/>
@@ -288,7 +291,7 @@
                           <Group type="102" attributes="0">
                               <Component id="jButtonObrisiStavku" min="-2" pref="40" max="-2" attributes="0"/>
                               <EmptySpace pref="26" max="32767" attributes="0"/>
-                              <Component id="jButton2" min="-2" pref="40" max="-2" attributes="0"/>
+                              <Component id="jButtonIzdajRacun" min="-2" pref="40" max="-2" attributes="0"/>
                           </Group>
                           <Component id="jScrollPane1" pref="0" max="32767" attributes="0"/>
                       </Group>
@@ -364,10 +367,13 @@
                 <Property name="text" type="java.lang.String" value="DODAJ"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JButton" name="jButton2">
+            <Component class="javax.swing.JButton" name="jButtonIzdajRacun">
               <Properties>
                 <Property name="text" type="java.lang.String" value="IZDAJ RACUN"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonIzdajRacunActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>

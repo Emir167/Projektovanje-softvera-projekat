@@ -11,7 +11,6 @@ import domain.VrstaUsluge;
 import java.util.ArrayList;
 import so.drzavljanstvo.SOGetAllDrzavljanstvo;
 
-// SO paketi po tvojoj strukturi
 import so.login.SOLogin;
 
 import so.gost.SOAddGost;

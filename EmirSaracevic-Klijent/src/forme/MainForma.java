@@ -61,7 +61,7 @@ public class MainForma extends javax.swing.JFrame {
         
         jButtonDodajStavku.addActionListener(e -> dodajStavku());
         jButtonObrisiStavku.addActionListener(e -> obrisiStavku());
-        jButton2.addActionListener(e -> izdajRacun());
+        jButtonIzdajRacun.addActionListener(e -> izdajRacun());
         
       /*  jMenuItemDodajUslugu.addActionListener(e -> {
         FormaNovaVrstaUsluge d = new FormaNovaVrstaUsluge(this, true);
@@ -99,7 +99,7 @@ public class MainForma extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableStavkeRacuna = new javax.swing.JTable();
         jButtonDodajStavku = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        jButtonIzdajRacun = new javax.swing.JButton();
         jComboBoxGost = new javax.swing.JComboBox<>();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenuGost = new javax.swing.JMenu();
@@ -123,6 +123,12 @@ public class MainForma extends javax.swing.JFrame {
         jLabel3.setText("Gost:");
 
         jLabel4.setText("Datum:");
+
+        jTextFieldUkupno.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldUkupnoActionPerformed(evt);
+            }
+        });
 
         jLabel5.setText("Ukupno:");
 
@@ -167,7 +173,12 @@ public class MainForma extends javax.swing.JFrame {
 
         jButtonDodajStavku.setText("DODAJ");
 
-        jButton2.setText("IZDAJ RACUN");
+        jButtonIzdajRacun.setText("IZDAJ RACUN");
+        jButtonIzdajRacun.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonIzdajRacunActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -190,7 +201,7 @@ public class MainForma extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButtonDodajStavku, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonIzdajRacun, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonObrisiStavku, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(35, Short.MAX_VALUE))
         );
@@ -219,7 +230,7 @@ public class MainForma extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jButtonObrisiStavku, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jButtonIzdajRacun, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addGap(61, 61, 61))
         );
@@ -430,12 +441,20 @@ public class MainForma extends javax.swing.JFrame {
             }
         }    }//GEN-LAST:event_jMenuItemOdjaviSeActionPerformed
 
+    private void jButtonIzdajRacunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonIzdajRacunActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonIzdajRacunActionPerformed
+
+    private void jTextFieldUkupnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldUkupnoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldUkupnoActionPerformed
+
     /**
      * @param args the command line arguments
      */
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButtonDodajStavku;
+    private javax.swing.JButton jButtonIzdajRacun;
     private javax.swing.JButton jButtonObrisiStavku;
     private javax.swing.JComboBox<Gost> jComboBoxGost;
     private javax.swing.JComboBox<VrstaUsluge> jComboBoxVrstaUsluge;

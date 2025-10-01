@@ -22,6 +22,7 @@ public class FormaDodajStrucnaSprema extends javax.swing.JDialog {
     public FormaDodajStrucnaSprema(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        setTitle("Dodaj strucnu spremu");
     }
 
     /**

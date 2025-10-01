@@ -4,6 +4,15 @@
  */
 package forme;
 
+import domain.Racun;
+import domain.VrstaUsluge;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import javax.swing.JOptionPane;
+import modeli.TableModelRacun;
+
 /**
  *
  * @author korisnk
@@ -12,16 +21,31 @@ public class FormaPretraziRacun extends javax.swing.JDialog {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FormaPretraziRacun.class.getName());
 
-    /**
+    List<Racun> sviRacuni = new ArrayList<>();
+     /**
      * Creates new form FormaPretraziRacun
      */
+    
+    
     public FormaPretraziRacun(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         jComboBoxStavkeKriterijuma.setEnabled(false);
         jComboBoxStavkeKriterijuma.setVisible(false);
+        setTitle("Pretrazi racun");
+        
+        TableModelRacun model = new TableModelRacun();
+        jTableRacuni.setModel(model);
+        
+        ucitajSveRacune();
+        jButtonFiltriraj.addActionListener(e -> applyFilter());
+        popuniComboBox((String) jComboBoxKriterijum.getSelectedItem());
+        
     }
 
+    
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -35,13 +59,13 @@ public class FormaPretraziRacun extends javax.swing.JDialog {
         jTableRacuni = new javax.swing.JTable();
         jButtonDetaljiRacuna = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         jComboBoxKriterijum = new javax.swing.JComboBox<>();
         jTextFieldDatumOd = new javax.swing.JTextField();
         jComboBoxStavkeKriterijuma = new javax.swing.JComboBox<>();
         jTextFieldDatumDo = new javax.swing.JTextField();
         jLabelDatumOd = new javax.swing.JLabel();
         jLabelDatumDo = new javax.swing.JLabel();
+        jButtonFiltriraj = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -59,10 +83,13 @@ public class FormaPretraziRacun extends javax.swing.JDialog {
         jScrollPane1.setViewportView(jTableRacuni);
 
         jButtonDetaljiRacuna.setText("DETALJI RACUNA");
+        jButtonDetaljiRacuna.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonDetaljiRacunaActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("Filtriraj racun prema:");
-
-        jLabel2.setText("PRETRAZI RACUN");
 
         jComboBoxKriterijum.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "racunu", "recepcioneru", "gostu", "vrsti usluge" }));
         jComboBoxKriterijum.addActionListener(new java.awt.event.ActionListener() {
@@ -75,50 +102,47 @@ public class FormaPretraziRacun extends javax.swing.JDialog {
 
         jLabelDatumDo.setText("Datum do:");
 
+        jButtonFiltriraj.setText("Filtriraj");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 514, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGap(20, 20, 20)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jLabelDatumOd, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jTextFieldDatumOd, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jComboBoxKriterijum, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jComboBoxKriterijum, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(jLabelDatumOd, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jTextFieldDatumOd, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jComboBoxStavkeKriterijuma, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabelDatumDo, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jTextFieldDatumDo, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGap(320, 320, 320)
-                        .addComponent(jButtonDetaljiRacuna, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(265, 265, 265))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(86, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 695, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(84, 84, 84))
+                            .addComponent(jComboBoxStavkeKriterijuma, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabelDatumDo, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jTextFieldDatumDo, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addGap(18, 18, 18)
+                .addComponent(jButtonFiltriraj, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(195, 195, 195)
+                .addComponent(jButtonDetaljiRacuna, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel2)
-                .addGap(34, 34, 34)
+                .addGap(56, 56, 56)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jComboBoxKriterijum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -128,8 +152,9 @@ public class FormaPretraziRacun extends javax.swing.JDialog {
                     .addComponent(jTextFieldDatumOd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextFieldDatumDo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabelDatumOd)
-                    .addComponent(jLabelDatumDo))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
+                    .addComponent(jLabelDatumDo)
+                    .addComponent(jButtonFiltriraj, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jButtonDetaljiRacuna)
@@ -179,8 +204,33 @@ public class FormaPretraziRacun extends javax.swing.JDialog {
             default:
                 throw new AssertionError();
         }
+        jTextFieldDatumOd.setText("");
+        jTextFieldDatumDo.setText("");
+        popuniComboBox((String) jComboBoxKriterijum.getSelectedItem());
+        if (!"racunu".equals(jComboBoxKriterijum.getSelectedItem())) {
+            applyFilter();
+        }
 
     }//GEN-LAST:event_jComboBoxKriterijumActionPerformed
+
+    private void jButtonDetaljiRacunaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDetaljiRacunaActionPerformed
+        
+        int viewRow = jTableRacuni.getSelectedRow();
+        if (viewRow == -1) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Izaberi racun iz tabele.");
+            return;
+        }
+        int modelRow = jTableRacuni.convertRowIndexToModel(viewRow);
+
+        TableModelRacun tm = (TableModelRacun) jTableRacuni.getModel();
+        domain.Racun selektovan = tm.getAt(modelRow);
+
+        FormaDetaljiRacuna forma = new FormaDetaljiRacuna(null, true, selektovan);
+        forma.setLocationRelativeTo(this);
+        forma.setVisible(true);
+        
+        
+    }//GEN-LAST:event_jButtonDetaljiRacunaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -218,13 +268,60 @@ public class FormaPretraziRacun extends javax.swing.JDialog {
             }
         });
     }
+    
+    
+    private java.time.format.DateTimeFormatter DF = java.time.format.DateTimeFormatter.ofPattern("dd.MM.yyyy");
+
+    private java.time.LocalDate parseDateOrError(String txt, String fieldName) {
+        if (txt == null || txt.isBlank()) {
+        JOptionPane.showMessageDialog(this, fieldName + " je obavezan.",
+                "Greska", JOptionPane.ERROR_MESSAGE);
+        return null;
+    }
+
+    String norm = txt.trim();
+    if (norm.endsWith(".") || norm.endsWith("-")) {
+        norm = norm.substring(0, norm.length() - 1);
+    }
+
+    try {
+        return java.time.LocalDate.parse(norm, java.time.format.DateTimeFormatter.ofPattern("d.M.yyyy"));
+    } catch (java.time.format.DateTimeParseException e1) {
+        try {
+            return java.time.LocalDate.parse(norm, java.time.format.DateTimeFormatter.ofPattern("d-M-yyyy"));
+        } catch (java.time.format.DateTimeParseException e2) {
+            JOptionPane.showMessageDialog(this, fieldName + " nije validan datum (očekujem dd.MM.yyyy ili dd-MM-yyyy).",
+                    "Greska", JOptionPane.ERROR_MESSAGE);
+            return null;
+        }
+    }
+    }
+
+    private void showError(String msg) {
+        javax.swing.JOptionPane.showMessageDialog(this, msg, "Greska", javax.swing.JOptionPane.ERROR_MESSAGE);
+    }
+
+    private void setTableData(java.util.List<domain.Racun> racuni) {
+        ((TableModelRacun) jTableRacuni.getModel()).setRacuni(racuni);
+    }
+    
+    
+private void ucitajSveRacune() {
+    try {
+        sviRacuni = controller.KlijentController.getInstance().getAllRacun(new domain.Racun());
+        setTableData(sviRacuni);
+    } catch (Exception ex) {
+        logger.log(java.util.logging.Level.SEVERE, "Greska pri ucitavanju racuna", ex);
+        showError("Ne mogu da ucitam racune.");
+    }
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonDetaljiRacuna;
+    private javax.swing.JButton jButtonFiltriraj;
     private javax.swing.JComboBox<String> jComboBoxKriterijum;
-    private javax.swing.JComboBox<String> jComboBoxStavkeKriterijuma;
+    private javax.swing.JComboBox<Object> jComboBoxStavkeKriterijuma;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabelDatumDo;
     private javax.swing.JLabel jLabelDatumOd;
     private javax.swing.JScrollPane jScrollPane1;
@@ -232,4 +329,146 @@ public class FormaPretraziRacun extends javax.swing.JDialog {
     private javax.swing.JTextField jTextFieldDatumDo;
     private javax.swing.JTextField jTextFieldDatumOd;
     // End of variables declaration//GEN-END:variables
+
+    private void applyFilter() {
+        String kriterijum = (String) jComboBoxKriterijum.getSelectedItem();
+        List<domain.Racun> rezultat = new ArrayList<>();
+
+    try {
+        switch (kriterijum) {
+            case "racunu": {
+                java.time.LocalDate ldOd = parseDateOrError(jTextFieldDatumOd.getText(), "Datum od");
+                if (ldOd == null) return;
+                java.time.LocalDate ldDo = parseDateOrError(jTextFieldDatumDo.getText(), "Datum do");
+                if (ldDo == null) return;
+                if (ldOd.isAfter(ldDo)) { showError("'Datum od' ne moze biti posle 'Datum do'."); return; }
+
+                java.time.ZoneId Z = java.time.ZoneId.systemDefault();
+                for (domain.Racun r : sviRacuni) {
+                    java.time.LocalDate d = toLocalDate(r.getDatumIzdavanja());
+
+                    if (!d.isBefore(ldOd) && !d.isAfter(ldDo)) {
+                        rezultat.add(r);
+                    }
+                }
+                break;
+            }
+
+            case "gostu": {
+                Object sel = jComboBoxStavkeKriterijuma.getSelectedItem();
+                if (!(sel instanceof domain.Gost)) { showError("Greska, gost nije odabran!"); return; }
+
+                Racun filter = new Racun();
+                filter.setGost((domain.Gost) sel);
+
+                java.util.ArrayList<domain.Racun> lista =
+                        controller.KlijentController.getInstance().getAllRacun(filter);
+
+                setTableData(lista);
+                return;
+            }
+
+            case "recepcioneru": {
+                Object sel = jComboBoxStavkeKriterijuma.getSelectedItem();
+                if (!(sel instanceof domain.Recepcioner)) { showError("Izaberi recepcionera."); return; }
+                int rid = ((domain.Recepcioner) sel).getIdRecepcioner();
+
+                for (domain.Racun r : sviRacuni) {
+                    if (r.getRecepcioner() != null && r.getRecepcioner().getIdRecepcioner() == rid) {
+                        rezultat.add(r);
+                    }
+                }
+                break;
+            }
+
+            case "vrsti usluge": {
+                Object sel = jComboBoxStavkeKriterijuma.getSelectedItem();
+                if (!(sel instanceof domain.VrstaUsluge)) { showError("Izaberi vrstu usluge."); return; }
+                int vid = ((domain.VrstaUsluge) sel).getIdUsluge();
+
+                for (domain.Racun r : sviRacuni) {
+                    try {
+                        java.util.ArrayList<domain.StavkaRacuna> stavke =
+                                controller.KlijentController.getInstance().getAllStavkaRacuna(r.getIdRacuna());
+                        boolean ima = false;
+                        for (domain.StavkaRacuna s : stavke) {
+                            if (s.getVrstaUsluge() != null && s.getVrstaUsluge().getIdUsluge() == vid) {
+                                ima = true; break;
+                            }
+                        }
+                        if (ima) rezultat.add(r);
+                    } catch (Exception e) {
+                        logger.log(java.util.logging.Level.WARNING, "Stavke ne mogu da se ucitaju za racun " + r.getIdRacuna(), e);
+                    }
+                }
+                break;
+            }
+
+            default: {
+                showError("Nepoznat kriterijum.");
+                return;
+            }
+        }
+
+        setTableData(rezultat);
+
+    } catch (Exception ex) {
+        logger.log(java.util.logging.Level.SEVERE, "Greska pri filtriranju", ex);
+        showError("Doslo je do greske pri pretrazi.");
+    }
+           
+    }
+
+    private void popuniComboBox(String kriterijum) {
+ javax.swing.DefaultComboBoxModel<Object> model = new javax.swing.DefaultComboBoxModel<>();
+    jComboBoxStavkeKriterijuma.setModel(model);
+
+    try {
+        switch (kriterijum) {
+            case "recepcioneru": {
+                java.util.ArrayList<domain.Recepcioner> lista =
+                        controller.KlijentController.getInstance().getAllRecepcioner();
+                lista.sort(java.util.Comparator
+                        .comparing(domain.Recepcioner::getPrezime, String.CASE_INSENSITIVE_ORDER)
+                        .thenComparing(domain.Recepcioner::getIme, String.CASE_INSENSITIVE_ORDER));
+                for (domain.Recepcioner r : lista) model.addElement(r);
+                break;
+            }
+            case "gostu": {
+                java.util.ArrayList<domain.Gost> lista =
+                        controller.KlijentController.getInstance().getAllGost();
+                lista.sort(java.util.Comparator
+                        .comparing(domain.Gost::getPrezime, String.CASE_INSENSITIVE_ORDER)
+                        .thenComparing(domain.Gost::getIme, String.CASE_INSENSITIVE_ORDER));
+                for (domain.Gost g : lista) model.addElement(g);
+                break;
+            }
+            case "vrsti usluge": {
+                List<VrstaUsluge> lista =
+                        controller.KlijentController.getInstance().getAllVrstaUsluge();
+                lista.sort(java.util.Comparator
+                        .comparing(domain.VrstaUsluge::getNazivUsluge, String.CASE_INSENSITIVE_ORDER));
+                for (domain.VrstaUsluge v : lista) model.addElement(v);
+                break;
+            }
+            default: {
+                break;
+            }
+        }
+    } catch (Exception ex) {
+        logger.log(java.util.logging.Level.SEVERE, "Greska pri ucitavanju stavki", ex);
+        showError("Neuspelo ucitavanje stavki za kriterijum.");
+    }
+    }
+
+    private LocalDate toLocalDate(Date date) {
+            if (date == null) return null;
+            if (date instanceof java.sql.Date) {
+                return ((java.sql.Date) date).toLocalDate();
+            }
+            return java.time.Instant.ofEpochMilli(date.getTime())
+                    .atZone(java.time.ZoneId.systemDefault())
+                    .toLocalDate();    
+    
+    }
 }

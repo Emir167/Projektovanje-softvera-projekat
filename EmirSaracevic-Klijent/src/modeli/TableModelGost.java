@@ -63,4 +63,10 @@ public class TableModelGost extends AbstractTableModel {
         gosti.set(row, izmenjen);
         fireTableRowsUpdated(row, row);
     }
+
+    @Override
+    public String getColumnName(int column) {
+        return kolone[column];
+    }
+    
 }
