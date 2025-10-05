@@ -4,7 +4,6 @@ import domain.Drzavljanstvo;
 import domain.Gost;
 import domain.Racun;
 import domain.Recepcioner;
-import domain.StavkaRacuna;
 import domain.StrucnaSprema;
 import domain.VrstaUsluge;
 
@@ -27,10 +26,7 @@ import so.recepcioner.SOGetAllRecepcioner;
 import so.strucna_sprema.SOAddStrucnaSprema;
 import so.strucna_sprema.SOGetAllStrucnaSprema;
 
-import so.vrstaUsluge.SOAddVrstaUsluge;
-import so.vrstaUsluge.SODeleteVrstaUsluge;
 import so.vrstaUsluge.SOGetAllVrstaUsluge;
-import so.vrstaUsluge.SOUpdateVrstaUsluge;
 
 public class ServerController {
 
@@ -63,7 +59,6 @@ public class ServerController {
         ulogovaniRecepcioneri.remove(ulogovani);
     }
 
-    
     public Object getAllRecepcioner() throws Exception {
         SOGetAllRecepcioner so = new SOGetAllRecepcioner();
         so.templateExecute(new Recepcioner());
@@ -125,17 +120,6 @@ public class ServerController {
     }
 
     
-    public void unesiUslugu(VrstaUsluge vu) throws Exception {
-        new SOAddVrstaUsluge().templateExecute(vu);
-    }
-
-    public void izmeniUslugu(VrstaUsluge vu) throws Exception {
-        new SOUpdateVrstaUsluge().templateExecute(vu);
-    }
-
-    public void obrisiUslugu(VrstaUsluge vu) throws Exception {
-        new SODeleteVrstaUsluge().templateExecute(vu);
-    }
 
     public Object getAllUsluga() throws Exception {
         SOGetAllVrstaUsluge so = new SOGetAllVrstaUsluge();

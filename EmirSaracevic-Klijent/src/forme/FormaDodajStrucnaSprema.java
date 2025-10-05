@@ -134,7 +134,7 @@ public class FormaDodajStrucnaSprema extends javax.swing.JDialog {
         JOptionPane.showMessageDialog(this, "Strucna sprema je uspesno dodata.");
         dispose();
     } catch (Exception ex) {
-        JOptionPane.showMessageDialog(this, "Greska: " + ex.getMessage(), "Greska", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(this, "Sistem ne moze da zapamti strucnu spremu.", "Greska", JOptionPane.ERROR_MESSAGE);
     }
     }//GEN-LAST:event_jButtonDodajSpremuActionPerformed
 

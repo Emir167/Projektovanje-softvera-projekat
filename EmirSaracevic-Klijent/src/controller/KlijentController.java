@@ -4,7 +4,6 @@ import domain.Drzavljanstvo;
 import domain.Gost;
 import domain.Racun;
 import domain.Recepcioner;
-import domain.StavkaRacuna;
 import domain.StrucnaSprema;
 import domain.VrstaUsluge;
 import java.io.ObjectInputStream;
@@ -51,17 +50,13 @@ public class KlijentController {
         return (ArrayList<Recepcioner>) sendRequest(Operacije.RECEPCIONER_GET_ALL, null);
     }
 
-    
-
     public void addGost(Gost g) throws Exception {
         sendRequest(Operacije.GOST_KREIRAJ, g);
     }
 
-
     public ArrayList<Gost> getAllGost() throws Exception {
         return (ArrayList<Gost>) sendRequest(Operacije.GOST_PRETRAZI, null);
     }
-
    
     public ArrayList<Gost> searchGost(Gost filter) throws Exception {
         return (ArrayList<Gost>) sendRequest(Operacije.GOST_PRETRAZI, filter);
@@ -80,8 +75,6 @@ public class KlijentController {
         sendRequest(Operacije.RACUN_KREIRAJ, r);
     }
 
-    
-
     public ArrayList<Racun> getAllRacun(Racun filter) throws Exception {
         return (ArrayList<Racun>) sendRequest(Operacije.RACUN_PRETRAZI, filter);
     }
@@ -90,33 +83,12 @@ public class KlijentController {
         sendRequest(Operacije.RACUN_IZMENI, r);
     }
 
-   
-
     public void addStrucnaSprema(StrucnaSprema ss) throws Exception {
         sendRequest(Operacije.STRUCNA_SPREMA_UNESI, ss);
     }
 
-   
-
-    public void addVrstaUsluge(VrstaUsluge v) throws Exception {
-        sendRequest(Operacije.USLUGA_UNESI, v);
-    }
-
-
     public ArrayList<VrstaUsluge> getAllVrstaUsluge() throws Exception {
         return (ArrayList<VrstaUsluge>) sendRequest(Operacije.USLUGA_PRETRAZI, null);
-    }
-
-    public ArrayList<VrstaUsluge> searchVrstaUsluge(VrstaUsluge filter) throws Exception {
-        return (ArrayList<VrstaUsluge>) sendRequest(Operacije.USLUGA_PRETRAZI, filter);
-    }
-
-    public void updateVrstaUsluge(VrstaUsluge v) throws Exception {
-        sendRequest(Operacije.USLUGA_IZMENI, v);
-    }
-
-    public void deleteVrstaUsluge(VrstaUsluge v) throws Exception {
-        sendRequest(Operacije.USLUGA_OBRISI, v);
     }
 
     public ArrayList<Drzavljanstvo> getAllDrzavljanstvo() throws Exception {
@@ -134,4 +106,5 @@ public class KlijentController {
     public Racun getRacunById(int id) throws Exception {
         return (Racun) sendRequest(Operacije.RACUN_GET_ONE, id);
     }
+
 }

@@ -7,6 +7,7 @@ package modeli;
 import domain.Racun;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.AbstractTableModel;
 
 /**
@@ -41,7 +42,6 @@ public class TableModelRacun extends AbstractTableModel {
             default:
                 throw new AssertionError();
         }
-        
     }
 
     @Override

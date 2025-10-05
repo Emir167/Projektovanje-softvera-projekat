@@ -217,10 +217,11 @@ public class FormaDetaljiRacuna extends javax.swing.JDialog {
                                             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                             .addComponent(jComboBoxVrstaUsluge, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                            .addComponent(jTextFieldRecepcioner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel6)
-                                            .addComponent(jTextFieldKolicina, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                .addComponent(jTextFieldRecepcioner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(jTextFieldKolicina, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                                     .addComponent(jLabel4))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -274,7 +275,7 @@ public class FormaDetaljiRacuna extends javax.swing.JDialog {
         } catch (Exception ex) {
             javax.swing.JOptionPane.showMessageDialog(
                 this,
-                "Greska pri cuvanju: " + ex.getMessage(),
+                "Sistem ne moze da zapamti racun.",
                 "Greska",
                 javax.swing.JOptionPane.ERROR_MESSAGE
             );
@@ -397,10 +398,9 @@ public class FormaDetaljiRacuna extends javax.swing.JDialog {
               KlijentController.getInstance().updateRacun(racun);
 
              // JOptionPane.showMessageDialog(this, "Racun je uspesno izmenjen.");
-        
     } catch (Exception ex) {
         javax.swing.JOptionPane.showMessageDialog(this,
-                "Greska pri cuvanju: " + ex.getMessage(),
+                "Sistem ne moze da zapamti racun.",
                 "Greska", JOptionPane.ERROR_MESSAGE);
     }
 

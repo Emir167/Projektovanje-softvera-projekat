@@ -136,8 +136,9 @@ public class LoginForma extends javax.swing.JFrame {
 
             System.out.println(r.getKorisnickoIme()+" "+r.getSifra());
             Recepcioner recepcioner = KlijentController.getInstance().login(r);
+            
             System.out.println("2");
-            Session.getInstance().setUlogovani(recepcioner);
+
             System.out.println("3");
             JOptionPane.showMessageDialog(this, "Uspesna prijava: " + recepcioner.getIme() + " " + recepcioner.getPrezime());
             System.out.println("4");
@@ -145,10 +146,27 @@ public class LoginForma extends javax.swing.JFrame {
             this.dispose();
 
        } catch (Exception ex) {
-        ex.printStackTrace(); 
+        String msg = ex.getMessage() != null ? ex.getMessage() : "";
 
-        JOptionPane.showMessageDialog(this, "Greska", "Greska pri prijavi", JOptionPane.ERROR_MESSAGE);
-}
+        boolean badCreds =
+                msg.contains("kredencijalima ne postoji")
+             || msg.contains("Prosledjeni objekat nije instanca klase Recepcioner");
+
+        boolean networkLike =
+                ex instanceof java.net.ConnectException
+             || ex instanceof java.net.SocketException
+             || ex instanceof java.io.EOFException
+             || msg.toLowerCase().contains("connection")
+             || msg.toLowerCase().contains("socket")
+             || msg.toLowerCase().contains("baza")
+             || msg.toLowerCase().contains("sql");
+
+        if (badCreds) {
+            JOptionPane.showMessageDialog(this, "Korisnicko ime i/li sifra nisu ispravni.", "Greska", JOptionPane.ERROR_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "Ne moze da se otvori glavna forma i meni.", "Greska", JOptionPane.ERROR_MESSAGE);
+        }
+    }
     }//GEN-LAST:event_jButtonUlogujSeActionPerformed
 
     private void jButtonOdustaniActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonOdustaniActionPerformed

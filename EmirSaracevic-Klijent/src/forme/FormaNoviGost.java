@@ -4,9 +4,12 @@
  */
 package forme;
 
+import controller.KlijentController;
 import domain.Drzavljanstvo;
 import domain.Gost;
 import java.awt.Frame;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -25,11 +28,10 @@ public class FormaNoviGost extends javax.swing.JDialog {
         setTitle("Unos novog gosta");
         setLocationRelativeTo(parent);
         jButtonIzmeniGosta.setVisible(false);
-        // akcije
-        jButtonZatvori.addActionListener(e -> dispose());
-        jButtonDodajGosta.addActionListener(e -> sacuvajGosta());
-
-        // popuna državljanstava
+       // jButtonZatvori.addActionListener(e -> dispose());
+       jButtonDodajGosta.addActionListener(e -> sacuvajGosta());
+        jButtonObrisiGosta.setVisible(false);
+        jButtonObrisiGosta.setEnabled(false);
         popuniDrzavljanstva();
        }
 
@@ -39,7 +41,7 @@ public class FormaNoviGost extends javax.swing.JDialog {
 public FormaNoviGost(java.awt.Frame parent, boolean modal, domain.Gost selektovan) {
     super(parent, modal);       
     initComponents();
-    setTitle("Izmena gosta");
+    setTitle("Detalji gosta");
     setLocationRelativeTo(parent);
 
     jButtonDodajGosta.setVisible(false);
@@ -47,6 +49,9 @@ public FormaNoviGost(java.awt.Frame parent, boolean modal, domain.Gost selektova
     jButtonIzmeniGosta.setVisible(true);
     jButtonIzmeniGosta.setEnabled(true);
 
+    jButtonObrisiGosta.setVisible(true);
+    jButtonObrisiGosta.setEnabled(true);
+    
     popuniDrzavljanstva();
     if(selektovan!=null){
     hiddenIdGost = selektovan.getIdGost();
@@ -54,10 +59,10 @@ public FormaNoviGost(java.awt.Frame parent, boolean modal, domain.Gost selektova
     jTextFieldPrezime.setText(selektovan.getPrezime());
     jTextFieldEmail.setText(selektovan.getEmail());
     }
-    
+    if(selektovan==null) return;
     int idDrz = (selektovan.getDrzavljanstvo() != null) ? selektovan.getDrzavljanstvo().getIdDrzavljanstvo() : -1;
     for (int i = 0; i < jComboBoxDrzavljanstvo.getItemCount(); i++) {
-        domain.Drzavljanstvo d = jComboBoxDrzavljanstvo.getItemAt(i);
+        Drzavljanstvo d = jComboBoxDrzavljanstvo.getItemAt(i);
         if (d != null && d.getIdDrzavljanstvo() == idDrz) {
             jComboBoxDrzavljanstvo.setSelectedIndex(i);
             break;
@@ -85,6 +90,7 @@ public FormaNoviGost(java.awt.Frame parent, boolean modal, domain.Gost selektova
         jLabel5 = new javax.swing.JLabel();
         jComboBoxDrzavljanstvo = new javax.swing.JComboBox<>();
         jButtonIzmeniGosta = new javax.swing.JButton();
+        jButtonObrisiGosta = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -109,6 +115,13 @@ public FormaNoviGost(java.awt.Frame parent, boolean modal, domain.Gost selektova
         jButtonIzmeniGosta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonIzmeniGostaActionPerformed(evt);
+            }
+        });
+
+        jButtonObrisiGosta.setText("OBRISI GOSTA");
+        jButtonObrisiGosta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonObrisiGostaActionPerformed(evt);
             }
         });
 
@@ -141,9 +154,11 @@ public FormaNoviGost(java.awt.Frame parent, boolean modal, domain.Gost selektova
                         .addGap(31, 31, 31)
                         .addComponent(jButtonZatvori, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jButtonIzmeniGosta)
-                        .addGap(25, 25, 25)
-                        .addComponent(jButtonDodajGosta)))
+                        .addComponent(jButtonDodajGosta)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jButtonObrisiGosta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButtonIzmeniGosta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -165,7 +180,9 @@ public FormaNoviGost(java.awt.Frame parent, boolean modal, domain.Gost selektova
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(jComboBoxDrzavljanstvo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButtonObrisiGosta, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonDodajGosta, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonZatvori, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -202,50 +219,60 @@ public FormaNoviGost(java.awt.Frame parent, boolean modal, domain.Gost selektova
             javax.swing.JOptionPane.showMessageDialog(this, "Gost je uspesno izmenjen.");
             this.dispose();  
         } catch (Exception ex) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Greska: " + ex.getMessage());
+            javax.swing.JOptionPane.showMessageDialog(this, "Sistem ne moze da izmeni gosta.", "Greska", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButtonIzmeniGostaActionPerformed
+
+    private void jButtonObrisiGostaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonObrisiGostaActionPerformed
+        
+       if (hiddenIdGost <= 0) {
+        JOptionPane.showMessageDialog(this, "Nema vazeceg ID-ja gosta za brisanje.");
+        return;
+    }
+
+    int potvrda = JOptionPane.showConfirmDialog(
+            this,
+            "Obrisati ovog gosta?",
+            "Potvrda",
+            JOptionPane.YES_NO_OPTION
+    );
+    if (potvrda != JOptionPane.YES_OPTION) return;
+
+    try {
+        Gost g = new Gost();
+        g.setIdGost(hiddenIdGost);    
+        KlijentController.getInstance().deleteGost(g);
+        JOptionPane.showMessageDialog(this, "Gost je uspesno obrisan.");
+        dispose();                      // zatvori dijalog
+    } catch (java.sql.SQLIntegrityConstraintViolationException ex) {
+        JOptionPane.showMessageDialog(
+            this,
+            "Gost ne moze da se obrise jer postoje povezani racuni.",
+            "Greska",
+            JOptionPane.ERROR_MESSAGE
+        );
+    } catch (Exception ex) {
+        JOptionPane.showMessageDialog(
+            this,
+            "Sistem ne moze da obrise gosta.",
+            "Greska",
+            JOptionPane.ERROR_MESSAGE
+        );
+    }
+
+
+
+    }//GEN-LAST:event_jButtonObrisiGostaActionPerformed
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                FormaNoviGost dialog = new FormaNoviGost(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
+  
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonDodajGosta;
     private javax.swing.JButton jButtonIzmeniGosta;
+    private javax.swing.JButton jButtonObrisiGosta;
     private javax.swing.JButton jButtonZatvori;
     private javax.swing.JComboBox<Drzavljanstvo> jComboBoxDrzavljanstvo;
     private javax.swing.JLabel jLabel1;
@@ -274,21 +301,21 @@ public FormaNoviGost(java.awt.Frame parent, boolean modal, domain.Gost selektova
             }
 
             domain.Gost g = new domain.Gost(0, ime, prezime, email, drz);
-            controller.KlijentController.getInstance().addGost(g);
+            KlijentController.getInstance().addGost(g);
 
             javax.swing.JOptionPane.showMessageDialog(this, "Gost je uspesno dodat.");
             dispose();
         
     } catch (Exception ex) {
             ex.printStackTrace();
-            javax.swing.JOptionPane.showMessageDialog(this, "Greska pri dodavanju gosta: " + ex.getMessage());
+            javax.swing.JOptionPane.showMessageDialog(this, "Sistem ne moze da doda gosta.","Greska", JOptionPane.ERROR_MESSAGE);
     }
     }
 
     private void popuniDrzavljanstva() {
          try {
-            java.util.ArrayList<domain.Drzavljanstvo> lista =
-                    controller.KlijentController.getInstance().getAllDrzavljanstvo();
+             ArrayList<domain.Drzavljanstvo> lista =
+                   KlijentController.getInstance().getAllDrzavljanstvo();
             jComboBoxDrzavljanstvo.removeAllItems();
             for (domain.Drzavljanstvo d : lista) {
                 jComboBoxDrzavljanstvo.addItem(d);

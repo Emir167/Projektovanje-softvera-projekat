@@ -9,6 +9,7 @@ import db.DBBroker;
 import domain.ApstraktniDomenskiObjekat;
 import domain.Recepcioner;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import so.AbstractSO;
 
 /**
@@ -47,7 +48,6 @@ public class SOLogin extends AbstractSO{
                 return;
             }
         }
-
         throw new Exception("Recepcioner sa tim kredencijalima ne postoji!");
     }
 

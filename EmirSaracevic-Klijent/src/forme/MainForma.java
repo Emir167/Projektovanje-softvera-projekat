@@ -532,7 +532,7 @@ import session.Session;
                return;
            }
            if (tmStavke.getRowCount() == 0) {
-               JOptionPane.showMessageDialog(this, "Racun nema nijednu stavku.");
+               JOptionPane.showMessageDialog(this, "Racun nema nijednu stavku.", "Greska", JOptionPane.ERROR_MESSAGE);
                return;
            }
 

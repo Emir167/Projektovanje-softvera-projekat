@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import modeli.TableModelRacun;
 
@@ -229,7 +230,7 @@ public class FormaPretraziRacun extends javax.swing.JDialog {
         try {
             racunSaStavkama = KlijentController.getInstance().getRacunById(osnovni.getIdRacuna());
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "Ne mogu da ucitam stavke za racun.");
+            JOptionPane.showMessageDialog(this, "Sistem ne moze da nadje racun.");
             return;
         }
 
@@ -273,6 +274,9 @@ public class FormaPretraziRacun extends javax.swing.JDialog {
 
     private void setTableData(java.util.List<domain.Racun> racuni) {
         ((TableModelRacun) jTableRacuni.getModel()).setRacuni(racuni);
+         if (racuni == null || racuni.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Nema racuna za odabrani kriterijum.", "Obavestenje", JOptionPane.INFORMATION_MESSAGE);
+        }
     }
     
     
@@ -410,7 +414,6 @@ private void ucitajSveRacune() {
         }
 
         setTableData(rezultat);
-
     } catch (Exception ex) {
         logger.log(java.util.logging.Level.SEVERE, "Greska pri filtriranju", ex);
         showError("Doslo je do greske pri pretrazi.");
@@ -419,7 +422,7 @@ private void ucitajSveRacune() {
     }
 
     private void popuniComboBox(String kriterijum) {
- javax.swing.DefaultComboBoxModel<Object> model = new javax.swing.DefaultComboBoxModel<>();
+        DefaultComboBoxModel<Object> model = new DefaultComboBoxModel<>();
     jComboBoxStavkeKriterijuma.setModel(model);
 
     try {

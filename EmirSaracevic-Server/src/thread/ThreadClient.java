@@ -5,7 +5,6 @@ import domain.Gost;
 import domain.Racun;
 import domain.Recepcioner;
 import domain.StrucnaSprema;
-import domain.VrstaUsluge;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -70,10 +69,7 @@ public class ThreadClient extends Thread {
 
                 case STRUCNA_SPREMA_UNESI: ServerController.getInstance().unesiStrucnuSpremu((StrucnaSprema) p); break;
 
-                case USLUGA_UNESI:   ServerController.getInstance().unesiUslugu((VrstaUsluge) p); break;
                 case USLUGA_PRETRAZI:response.setOdgovor(ServerController.getInstance().getAllUsluga()); break;
-                case USLUGA_IZMENI:  ServerController.getInstance().izmeniUslugu((VrstaUsluge) p); break;
-                case USLUGA_OBRISI:  ServerController.getInstance().obrisiUslugu((VrstaUsluge) p); break;
                 case RACUN_GET_ONE: {
                     int id = (int) p;
                     response.setOdgovor(ServerController.getInstance().getRacunById(id));
