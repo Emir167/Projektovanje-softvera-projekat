@@ -142,6 +142,7 @@ public class LoginForma extends javax.swing.JFrame {
             System.out.println("3");
             JOptionPane.showMessageDialog(this, "Uspesna prijava: " + recepcioner.getIme() + " " + recepcioner.getPrezime());
             System.out.println("4");
+            Session.getInstance().setUlogovani(recepcioner);
             new MainForma(recepcioner).setVisible(true);
             this.dispose();
 

@@ -2,7 +2,6 @@ package so;
 
 import db.DBBroker;
 import domain.ApstraktniDomenskiObjekat;
-import java.sql.SQLException;
 
 /**
  *
@@ -11,7 +10,7 @@ import java.sql.SQLException;
 import java.sql.SQLException;
 
 public abstract class AbstractSO {
-     protected abstract void validate(ApstraktniDomenskiObjekat ado) throws Exception;
+    protected abstract void validate(ApstraktniDomenskiObjekat ado) throws Exception;
     protected abstract void execute(ApstraktniDomenskiObjekat ado) throws Exception;
 
     public void templateExecute(ApstraktniDomenskiObjekat ado) throws Exception {

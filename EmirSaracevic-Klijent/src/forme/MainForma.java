@@ -564,7 +564,7 @@ import session.Session;
            JOptionPane.showMessageDialog(this, "Datum nije u formatu dd/MM/yyyy.");
        } catch (Exception ex) {
            ex.printStackTrace();
-           JOptionPane.showMessageDialog(this, "Greska pri izdavanju racuna: " + ex.getMessage());
+           JOptionPane.showMessageDialog(this, "Greska pri izdavanju racuna!");
        }    
     }
 }
